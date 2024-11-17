@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: nanumSquare, Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  font-weight: 400;
+  src: url(../../public/fonts/NanumSquareNeoTTF-aLt.woff2) format('woff2'),
+    url(../../public/fonts/NanumSquareNeoTTF-aLt.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  font-weight: 500;
+  src: url(../../public/fonts/NanumSquareNeoTTF-bRg.woff2) format('woff2'),
+    url(../../public/fonts/NanumSquareNeoTTF-bRg.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  font-weight: 600;
+  src: url(../../public/fonts/NanumSquareNeoTTF-cBd.woff2) format('woff2'),
+    url(../../public/fonts/NanumSquareNeoTTF-cBd.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  font-weight: 700;
+  src: url(../../public/fonts/NanumSquareNeoTTF-dEb.woff2) format('woff2'),
+    url(../../public/fonts/NanumSquareNeoTTF-dEb.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  font-weight: 800;
+  src: url(../../public/fonts/NanumSquareNeoTTF-eHv.woff2) format('woff2'),
+    url(../../public/fonts/NanumSquareNeoTTF-eHv.woff) format('woff');
+}
