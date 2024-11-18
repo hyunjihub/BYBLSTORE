@@ -14,43 +14,50 @@
   }
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: nanumSquare, Arial, Helvetica, sans-serif;
+  font-family: NanumSquareNeo, Arial, Helvetica, sans-serif;
 }
 
 @font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 400;
+  font-family: NanumSquareNeo;
+  font-weight: 300;
   src: url(../../public/fonts/NanumSquareNeoTTF-aLt.woff2) format('woff2'),
     url(../../public/fonts/NanumSquareNeoTTF-aLt.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 500;
+  font-family: NanumSquareNeo;
+  font-weight: 400;
   src: url(../../public/fonts/NanumSquareNeoTTF-bRg.woff2) format('woff2'),
     url(../../public/fonts/NanumSquareNeoTTF-bRg.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 600;
+  font-family: NanumSquareNeo;
+  font-weight: 700;
   src: url(../../public/fonts/NanumSquareNeoTTF-cBd.woff2) format('woff2'),
     url(../../public/fonts/NanumSquareNeoTTF-cBd.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 700;
+  font-family: NanumSquareNeo;
+  font-weight: 800;
   src: url(../../public/fonts/NanumSquareNeoTTF-dEb.woff2) format('woff2'),
     url(../../public/fonts/NanumSquareNeoTTF-dEb.woff) format('woff');
 }
 
 @font-face {
-  font-family: 'NanumSquareNeo';
-  font-weight: 800;
+  font-family: NanumSquareNeo;
+  font-weight: 900;
   src: url(../../public/fonts/NanumSquareNeoTTF-eHv.woff2) format('woff2'),
     url(../../public/fonts/NanumSquareNeoTTF-eHv.woff) format('woff');
 }

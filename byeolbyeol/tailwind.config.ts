@@ -9,11 +9,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        nanumSquare: ['nanumSquare'],
+        NanumSquareNeo: ['NanumSquareNeo'],
       },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',
+        primary: '#47D45A',
       },
     },
   },
