@@ -8,6 +8,7 @@ import Link from 'next/link';
 import profile from '/public/images/tmp.jpg';
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import useStore from '@/store/useStore';
 
 interface MypageLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ interface MypageLayoutProps {
 
 export default function MypageLayout({ children }: MypageLayoutProps) {
   const pathname = usePathname();
+  const { nickname, profileImg } = useStore();
 
   useEffect(() => {
     console.log(pathname);
@@ -24,10 +26,16 @@ export default function MypageLayout({ children }: MypageLayoutProps) {
     <section className="mx-auto max-w-5xl mt-24 flex flex-col justify-center items-center">
       <h1 className="text-3xl font-black">MYPAGE</h1>
       <div className="mt-10 w-[200px] h-[200px] relative rounded-full">
-        <Image className="rounded-full object-cover" src={profile} alt="profile" width={300} height={300} />
+        <Image
+          className="rounded-full object-cover"
+          src={profileImg ? profileImg : profile}
+          alt="profile"
+          width={300}
+          height={300}
+        />
       </div>
       <div className="flex items-center">
-        <p className="text-2xl font-extrabold">별별닉네임</p>
+        <p className="text-2xl font-extrabold">{nickname}</p>
         <IoMdSettings className="ml-3 text-3xl text-gray-500" />
       </div>
       <nav className="mt-8 flex gap-20">

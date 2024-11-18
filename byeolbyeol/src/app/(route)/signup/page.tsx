@@ -38,6 +38,8 @@ export default function SignUp() {
         email: data.email,
         nickname: data.nickname,
         profileImg: '',
+        type: 'email',
+        follow: [],
         createdAt: new Date().toISOString(),
       });
       alert('정상적으로 가입되었습니다.');
