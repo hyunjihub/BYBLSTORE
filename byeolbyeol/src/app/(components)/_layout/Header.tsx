@@ -6,17 +6,12 @@ import Link from 'next/link';
 import { appAuth } from '@/firebase/config';
 import logo from '/public/images/bybl/logo.png';
 import { signOut } from 'firebase/auth';
-import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 export default function Header() {
   const pathname = usePathname();
   const { setData, userId } = useStore();
-
-  useEffect(() => {
-    console.log(userId);
-  }, [userId]);
 
   if (pathname === '/login' || pathname === '/signup') return null;
 
