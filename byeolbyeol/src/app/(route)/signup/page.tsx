@@ -34,11 +34,11 @@ export default function SignUp() {
       const user = credential.user;
       const userDoc = doc(collection(appFirestore, 'users'));
       await setDoc(userDoc, {
-        uid: user.uid,
+        userId: user.uid,
         email: data.email,
         nickname: data.nickname,
-        profile_image: '',
-        created_at: new Date().toISOString(),
+        profileImg: '',
+        createdAt: new Date().toISOString(),
       });
       alert('정상적으로 가입되었습니다.');
       router.push('/');

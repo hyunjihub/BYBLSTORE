@@ -1,9 +1,11 @@
+import { createJSONStorage, persist } from 'zustand/middleware';
+
 import { create } from 'zustand';
 
 interface UserData {
-  userId: number;
-  profileImg: string;
-  nickname: string;
+  userId: number | null;
+  profileImg: string | null;
+  nickname: string | null;
 }
 
 interface UserState {
@@ -13,16 +15,24 @@ interface UserState {
   setData: (newData: UserData) => void;
 }
 
-const useStore = create<UserState>((set) => ({
-  userId: null,
-  profileImg: null,
-  nickname: null,
-  setData: (newData) =>
-    set(() => ({
-      userId: newData.userId,
-      profileImg: newData.profileImg,
-      nickname: newData.nickname,
-    })),
-}));
+export const useStore = create(
+  persist<UserState>(
+    (set) => ({
+      userId: null,
+      profileImg: null,
+      nickname: null,
+      setData: (newData) =>
+        set(() => ({
+          userId: newData.userId,
+          profileImg: newData.profileImg,
+          nickname: newData.nickname,
+        })),
+    }),
+    {
+      name: 'userStorage',
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
 
 export default useStore;

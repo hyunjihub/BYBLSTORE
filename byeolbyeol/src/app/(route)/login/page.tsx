@@ -24,7 +24,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>();
-  const setData = useStore((state) => state.setData);
+  const { setData } = useStore();
   const router = useRouter();
 
   const onSubmit = async (data: LoginForm) => {
