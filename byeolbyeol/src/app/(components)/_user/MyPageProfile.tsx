@@ -2,13 +2,14 @@
 
 import '@/app/globals.css';
 
+import { appFirestore, appStorage } from '@/firebase/config';
+import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRef, useState } from 'react';
 
 import { BsFillCameraFill } from 'react-icons/bs';
 import Image from 'next/image';
 import { IoMdSettings } from 'react-icons/io';
-import { appStorage } from '@/firebase/config';
 import profile from '/public/images/tmp.jpg';
 import useStore from '@/store/useStore';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,7 +24,8 @@ export default function MyPageProfile() {
     nickname: null,
   });
 
-  const { nickname, profileImg } = useStore() as {
+  const { userId, nickname, profileImg } = useStore() as {
+    userId: number | null;
     nickname: string | null;
     profileImg: string | null;
   };
@@ -41,8 +43,29 @@ export default function MyPageProfile() {
     }
   };
 
-  const handleChangeInfo = () => {
-    console.log(modifiedInfo);
+  const handleChangeInfo = async () => {
+    const userQuery = query(collection(appFirestore, 'users'), where('userId', '==', userId));
+    const querySnapshot = await getDocs(userQuery);
+
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      const userRef = doc(appFirestore, 'users', userDoc.id);
+
+      const updatedData = {
+        nickname: modifiedInfo.nickname || nickname,
+        profileImg: modifiedInfo.profileImg || profileImg,
+      };
+
+      try {
+        await updateDoc(userRef, updatedData);
+        alert('회원 정보가 성공적으로 수정되었습니다.');
+      } catch (error) {
+        console.log(error);
+        alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');
+      }
+    } else {
+      alert('회원 정보를 찾을 수 없습니다.');
+    }
   };
 
   const handleUpload = () => {
@@ -78,6 +101,13 @@ export default function MyPageProfile() {
     }
   };
 
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setModifiedInfo((prevState) => ({
+      ...prevState,
+      nickname: e.target.value,
+    }));
+  };
+
   return (
     <>
       <div className="mt-7 mb-3 w-[200px] h-[200px] relative rounded-full">
@@ -104,7 +134,8 @@ export default function MyPageProfile() {
           <input
             className="w-40 px-1 border-b border-gray-500 text-2xl font-extrabold outline-none"
             placeholder="닉네임"
-            defaultValue={nickname || ''}
+            value={modifiedInfo.nickname || ''}
+            onChange={handleNicknameChange}
           />
         ) : (
           <p className="text-2xl pt-1 pl-3 font-extrabold">{nickname}</p>

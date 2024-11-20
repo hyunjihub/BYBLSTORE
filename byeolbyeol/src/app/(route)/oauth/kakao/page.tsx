@@ -75,8 +75,6 @@ const KakaoRedirectPage = () => {
           router.push('/');
         })
         .catch((error) => console.log(error));
-
-      console.log(user);
     };
     if (code) handleKaKaoLogin();
   }, [code, router, setData]);
