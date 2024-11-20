@@ -2,17 +2,16 @@
 
 import '@/app/globals.css';
 
-import { appFirestore, appStorage } from '@/firebase/config';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useRef, useState } from 'react';
 
 import { BsFillCameraFill } from 'react-icons/bs';
 import Image from 'next/image';
 import { IoMdSettings } from 'react-icons/io';
+import { appFirestore } from '@/firebase/config';
+import handleImageUpload from '../_image/imageUpload';
 import profile from '/public/images/tmp.jpg';
 import useStore from '@/store/useStore';
-import { v4 as uuidv4 } from 'uuid';
 
 export default function MyPageProfile() {
   const [isModifyMode, setIsModifyMode] = useState(false);
@@ -59,6 +58,7 @@ export default function MyPageProfile() {
       try {
         await updateDoc(userRef, updatedData);
         alert('회원 정보가 성공적으로 수정되었습니다.');
+        setIsModifyMode(true);
       } catch (error) {
         console.log(error);
         alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');
@@ -74,31 +74,12 @@ export default function MyPageProfile() {
     }
   };
 
-  const handleImageStorageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const image = e.target.files[0];
-    const extensionCheck = /(.*?)\.(jpg|jpeg|png)$/;
-    if (!image.name.match(extensionCheck)) {
-      alert('지원하지 않는 파일 형식입니다.\njpg/jpeg 또는 png 형식을 선택해주세요.');
-      return;
-    }
-    if (image.size > 1024 ** 2 * 5) {
-      alert('이미지 파일 크기가 너무 큽니다.\n5MB 미만 이미지를 선택해주세요.');
-      return;
-    }
-
-    try {
-      const fileRef = ref(appStorage, `profile/${uuidv4()}`);
-      await uploadBytes(fileRef, image);
-
-      const url = await getDownloadURL(fileRef);
-      setModifiedInfo((prevState) => ({
-        ...prevState,
-        profileImg: url,
-      }));
-    } catch {
-      alert('이미지 업로드에 실패했습니다. 다시 시도해주세요.');
-    }
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = await handleImageUpload(e);
+    setModifiedInfo((prevState) => ({
+      ...prevState,
+      nickname: url!,
+    }));
   };
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -125,7 +106,7 @@ export default function MyPageProfile() {
             >
               <BsFillCameraFill className="text-3xl" />
             </button>
-            <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => handleImageStorageUpload(e)} />
+            <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => handleImageChange(e)} />
           </>
         )}
       </div>
