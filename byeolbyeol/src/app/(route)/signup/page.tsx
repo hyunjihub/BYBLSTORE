@@ -3,7 +3,7 @@
 import '@/app/globals.css';
 
 import Image from 'next/image';
-import KakaoLogin from '@/app/(components)/_user/KaKaoLogin';
+import KakaoLogin from '@/app/(components)/_user/KakaoLogin';
 import Link from 'next/link';
 import SignUpForm from '@/app/(components)/_user/SignUpForm';
 import logo from '/public/images/bybl/logo.png';

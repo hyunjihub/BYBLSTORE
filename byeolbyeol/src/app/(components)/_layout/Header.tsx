@@ -7,11 +7,13 @@ import { appAuth } from '@/firebase/config';
 import logo from '/public/images/bybl/logo.png';
 import { signOut } from 'firebase/auth';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 export default function Header() {
   const pathname = usePathname();
   const { setData, userId } = useStore();
+  const router = useRouter();
 
   if (pathname === '/login' || pathname === '/signup') return null;
 
@@ -20,6 +22,7 @@ export default function Header() {
       await signOut(appAuth);
       alert('로그아웃 처리 되었습니다.');
       setData({ userId: null, profileImg: null, nickname: null });
+      router.push('/');
     } catch {
       alert('오류가 발생했습니다. 다시 시도해주세요.');
     }
@@ -44,7 +47,7 @@ export default function Header() {
           <Link href={userId ? '/mypage' : '/signup'}>{userId ? 'MYPAGE' : 'SIGNUP'}</Link>
         </li>
         <li>
-          <IoSearch className="text-xl" />
+          <IoSearch className="text-xl cursor-pointer" />
         </li>
       </ul>
     </header>
