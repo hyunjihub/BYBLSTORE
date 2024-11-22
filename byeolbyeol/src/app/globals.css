@@ -27,6 +27,20 @@ body {
   font-family: NanumSquareNeo, Arial, Helvetica, sans-serif;
 }
 
+.product-card-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.filter:not(:last-child)::after {
+  content: ' | ';
+  padding: 0 8px;
+  color: #ddd;
+}
+
 @font-face {
   font-family: NanumSquareNeo;
   font-weight: 300;

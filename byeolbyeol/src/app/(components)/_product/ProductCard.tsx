@@ -54,7 +54,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <IoHeartOutline />
             </div>
           </div>
-          <h2 className="font-extrabold mt-1">{product.productName}</h2>
+          <h2 className="font-extrabold mt-1 min-h-12 product-card-name">{product.productName}</h2>
           <div className="flex items-center gap-2">
             <p className="text-sm text-gray-400 line-through">{product.originalPrice.toLocaleString('ko-kr')}원</p>
             <p className="text-lg font-extrabold text-red-500">{product.salePrice.toLocaleString('ko-kr')}원</p>

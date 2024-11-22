@@ -7,7 +7,7 @@ export interface IProduct {
   salePrice: number;
   storeId: number;
   productImg: Array<string>;
-  options: Array<string>;
+  options: Array<string> | null;
   productInfo: Array<string>;
   createdAt: Timestamp;
 }
