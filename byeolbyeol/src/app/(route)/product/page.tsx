@@ -5,7 +5,7 @@ import '@/app/globals.css';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-import { IProduct } from '@/app/types';
+import { IProduct } from '@/app/util/types';
 import ProductCard from '@/app/(components)/_product/ProductCard';
 import ProductFilter from '@/app/(components)/_product/ProductFilter';
 import { appFirestore } from '@/firebase/config';

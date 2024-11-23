@@ -2,7 +2,7 @@
 
 import '@/app/globals.css';
 
-import { PRODUCT_FILTER } from '@/app/constant';
+import { PRODUCT_FILTER } from '@/app/util/constant';
 
 interface ProductFilterProps {
   filter: string;
