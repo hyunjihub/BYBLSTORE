@@ -11,3 +11,8 @@ export interface IProduct {
   productInfo: Array<string>;
   createdAt: Timestamp;
 }
+
+export interface ISelectedOption {
+  name: string;
+  quantity: number;
+}

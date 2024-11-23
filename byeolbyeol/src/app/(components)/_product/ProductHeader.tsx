@@ -2,9 +2,9 @@
 
 import '@/app/globals.css';
 
+import { IProduct, ISelectedOption } from '@/app/util/types';
 import { useEffect, useState } from 'react';
 
-import { IProduct } from '@/app/util/types';
 import Link from 'next/link';
 import ProductImageCarousel from './ProductImageCarousel';
 import ProductOptions from './ProductOptions';
@@ -13,6 +13,8 @@ import useFetchStoreName from '@/app/hooks/useFetchStoreName';
 
 export default function ProductHeader({ product }: { product: IProduct }) {
   const [storeName, setStoreName] = useState('');
+  const [selectedOptions, setSelectedOptions] = useState<ISelectedOption[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   const storeNameFromHook = useFetchStoreName({ storeId: product.storeId });
 
   useEffect(() => {
@@ -23,6 +25,12 @@ export default function ProductHeader({ product }: { product: IProduct }) {
 
     fetchStoreNameAsync();
   }, [storeNameFromHook]);
+
+  useEffect(() => {
+    const optionsTotal = selectedOptions.reduce((total, option) => total + option.quantity, 0);
+    const calculatedTotal = optionsTotal * product.salePrice;
+    setTotalAmount(calculatedTotal);
+  }, [selectedOptions, product.salePrice]);
 
   return (
     <article className="max-w-5xl mt-24 flex gap-10">
@@ -47,15 +55,14 @@ export default function ProductHeader({ product }: { product: IProduct }) {
             </p>
           </div>
         </div>
-        <ProductOptions options={product.options} />
-        <div className="flex justify-between items-center">
+        <ProductOptions
+          options={product.options}
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+        />
+        <div className="mt-2 flex justify-between items-center">
           <p className="font-extrabold text-sm">총 상품 금액</p>
-          <div className="flex items-center gap-1">
-            <p className="text-primary text-xl font-extrabold">
-              {(product.salePrice + 2500).toLocaleString('ko-kr')}원
-            </p>
-            <p className="text-gray-500 text-xs">(배송비 포함)</p>
-          </div>
+          <p className="text-primary text-xl font-extrabold">{totalAmount.toLocaleString('ko-kr')}원</p>
         </div>
         <button className="py-3 bg-primary rounded text-white font-extrabold">구매하기</button>
       </div>
