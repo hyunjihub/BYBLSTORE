@@ -1,5 +1,7 @@
 'use client';
 
+import '@/app/globals.css';
+
 import { ISelectedOption } from '@/app/util/types';
 import { IoClose } from 'react-icons/io5';
 
@@ -11,6 +13,11 @@ interface SelectedProps {
 
 export default function ProductSelected({ index, selectedOption, setSelectedOptions }: SelectedProps) {
   const handleQuantityChange = (index: number, quantity: number) => {
+    if (quantity <= 0) {
+      handleRemoveOption(selectedOption.name);
+      return;
+    }
+
     setSelectedOptions((prev) => {
       const updated = [...prev];
       updated[index].quantity = quantity;
@@ -24,17 +31,34 @@ export default function ProductSelected({ index, selectedOption, setSelectedOpti
 
   return (
     <div className="w-full flex justify-between items-center my-3">
-      <p className="mr-4 text-sm">{selectedOption.name}</p>
+      <div className="flex">
+        <p className="mr-3 text-sm">{selectedOption.name}</p>
+        <button className="ml-2 text-red-500 text-sm" onClick={() => handleRemoveOption(selectedOption.name)}>
+          <IoClose />
+        </button>
+      </div>
+
       <div className="flex items-center">
+        <button
+          className="w-7 h-7 font-extrabold border bg-gray-200"
+          value="-"
+          onClick={() => handleQuantityChange(index, selectedOption.quantity - 1)}
+        >
+          -
+        </button>
         <input
+          className="product-quantity w-10 h-7 border rounded px-2 py-1 font-extrabold text-sm text-center"
           type="number"
           value={selectedOption.quantity}
           onChange={(e) => handleQuantityChange(index, Number(e.target.value))}
           min={1}
-          className="w-16 border rounded px-2 py-1 text-sm"
         />
-        <button onClick={() => handleRemoveOption(selectedOption.name)} className="ml-2 text-red-500 text-sm">
-          <IoClose />
+        <button
+          className="w-7 h-7 font-extrabold border bg-gray-200"
+          value="+"
+          onClick={() => handleQuantityChange(index, selectedOption.quantity + 1)}
+        >
+          +
         </button>
       </div>
     </div>

@@ -6,6 +6,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import { IProduct } from '@/app/util/types';
+import ProductContent from '@/app/(components)/_product/ProductContent';
 import ProductHeader from '@/app/(components)/_product/ProductHeader';
 import { appFirestore } from '@/firebase/config';
 import { useParams } from 'next/navigation';
@@ -34,6 +35,13 @@ export default function ProductDetail() {
   }, [id]);
 
   return (
-    <section className="min-h-screen flex justify-center">{product && <ProductHeader product={product} />}</section>
+    <section className="min-h-screen flex flex-col items-center justify-center">
+      {product && (
+        <>
+          <ProductHeader product={product} />
+          <ProductContent productInfo={product.productInfo} />
+        </>
+      )}
+    </section>
   );
 }

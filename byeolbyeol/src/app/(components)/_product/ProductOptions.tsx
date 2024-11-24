@@ -17,6 +17,8 @@ export default function ProductOptions({ options, selectedOptions, setSelectedOp
     if (selectedValue && !selectedOptions.some((option) => option.name === selectedValue)) {
       setSelectedOptions((prev) => [...prev, { name: selectedValue, quantity: 1 }]);
     }
+
+    event.target.value = '';
   };
 
   return (

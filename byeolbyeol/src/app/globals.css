@@ -47,6 +47,19 @@ select {
   appearance: none; /* 화살표 없애기 */
 }
 
+/* Chrome, Safari, Edge, Opera */
+.product-quantity::-webkit-outer-spin-button,
+.product-quantity::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* 레이아웃에 영향을 미치지 않도록 한다. */
+}
+
+/* Firefox  */
+.product-quantity {
+  -moz-appearance: textfield; /* 숫자 입력 필드를 일반 텍스트 필드처럼 보이게 만듦 */
+  outline: none;
+}
+
 @font-face {
   font-family: NanumSquareNeo;
   font-weight: 300;

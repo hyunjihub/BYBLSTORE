@@ -27,21 +27,8 @@ export default function Product() {
         }
 
         const querySnapshot = await getDocs(productQuery);
-        const productList: IProduct[] = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            productId: data.productId,
-            productName: data.productName,
-            originalPrice: data.originalPrice,
-            salePrice: data.salePrice,
-            createdAt: data.createdAt.toDate().toISOString(),
-            storeId: data.storeId,
-            productImg: data.productImg,
-            options: data.options,
-            productInfo: data.productInfo,
-          };
-        });
-        setProducts(productList);
+        const products = querySnapshot.docs.map((doc) => doc.data() as IProduct);
+        setProducts(products);
       } catch {
         alert('상품 정보를 불러올 수 없습니다. 다시 시도해주세요.');
       }
