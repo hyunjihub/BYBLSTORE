@@ -19,11 +19,7 @@ interface ModifyModeProps {
 }
 
 export default function ModifyMode({ isModifyMode, setIsModifyMode, modifiedInfo, setModifiedInfo }: ModifyModeProps) {
-  const { userId, nickname, profileImg } = useStore() as {
-    userId: number | null;
-    nickname: string | null;
-    profileImg: string | null;
-  };
+  const { userId, nickname, profileImg, updateData } = useStore();
 
   const handleModify = (current: string) => {
     if (current === 'modify') {
@@ -46,13 +42,14 @@ export default function ModifyMode({ isModifyMode, setIsModifyMode, modifiedInfo
       const userRef = doc(appFirestore, 'users', userDoc.id);
 
       const updatedData = {
-        nickname: modifiedInfo.nickname || nickname,
-        profileImg: modifiedInfo.profileImg || profileImg,
+        nickname: modifiedInfo.nickname || nickname || '',
+        profileImg: modifiedInfo.profileImg || profileImg || '',
       };
 
       try {
         await updateDoc(userRef, updatedData);
         alert('회원 정보가 성공적으로 수정되었습니다.');
+        updateData(updatedData);
         setIsModifyMode(true);
       } catch {
         alert('회원 정보 수정에 실패했습니다. 다시 시도해주세요.');

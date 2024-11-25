@@ -10,6 +10,7 @@ interface UserState {
   follow: Array<number> | null;
   setData: (newData: IUser) => void;
   setFollow: (newFollow: Array<number>) => void;
+  updateData: (modified: { profileImg: string; nickname: string }) => void;
 }
 
 export const useStore = create(
@@ -29,6 +30,11 @@ export const useStore = create(
       setFollow: (newFollow: Array<number>) =>
         set(() => ({
           follow: newFollow,
+        })),
+      updateData: (modified: { profileImg: string; nickname: string }) =>
+        set(() => ({
+          profileImg: modified.profileImg,
+          nickname: modified.nickname,
         })),
     }),
     {
