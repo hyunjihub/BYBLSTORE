@@ -1,18 +1,15 @@
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { IUser } from '@/app/util/types';
 import { create } from 'zustand';
 
-interface UserData {
-  userId: number | null;
-  profileImg: string | null;
-  nickname: string | null;
-}
-
 interface UserState {
-  userId: number | null;
+  userId: string | null;
   profileImg: string | null;
   nickname: string | null;
-  setData: (newData: UserData) => void;
+  follow: Array<number> | null;
+  setData: (newData: IUser) => void;
+  setFollow: (newFollow: Array<number>) => void;
 }
 
 export const useStore = create(
@@ -21,11 +18,17 @@ export const useStore = create(
       userId: null,
       profileImg: null,
       nickname: null,
+      follow: null,
       setData: (newData) =>
         set(() => ({
           userId: newData.userId,
           profileImg: newData.profileImg,
           nickname: newData.nickname,
+          follow: newData.follow,
+        })),
+      setFollow: (newFollow: Array<number>) =>
+        set(() => ({
+          follow: newFollow,
         })),
     }),
     {

@@ -34,12 +34,13 @@ export default function LoginForm() {
       if (!userDocs.empty) {
         const userData = userDocs.docs[0].data();
 
-        const newData = {
+        const userInfo = {
           userId: userData.userId,
           profileImg: userData.profileImg,
           nickname: userData.nickname,
+          follow: userData.follow,
         };
-        setData(newData);
+        setData(userInfo);
         router.push('/');
       } else {
         setIsNotUser(true);

@@ -28,3 +28,10 @@ export interface IStore {
   locationInfo: string;
   tag: Array<string>;
 }
+
+export interface IUser {
+  userId: string | null;
+  nickname: string | null;
+  follow: Array<number> | null;
+  profileImg: string | null;
+}

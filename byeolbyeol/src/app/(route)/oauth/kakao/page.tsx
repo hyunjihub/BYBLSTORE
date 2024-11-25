@@ -57,6 +57,7 @@ const KakaoRedirectPage = () => {
               userId: querySnapshot.docs[0].data().userId,
               profileImg: querySnapshot.docs[0].data().profileImg,
               nickname: querySnapshot.docs[0].data().nickname,
+              follow: querySnapshot.docs[0].data().follow,
             };
             setData(newData);
           } else {

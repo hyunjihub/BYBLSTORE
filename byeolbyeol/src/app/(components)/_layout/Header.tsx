@@ -21,7 +21,7 @@ export default function Header() {
     try {
       await signOut(appAuth);
       alert('로그아웃 처리 되었습니다.');
-      setData({ userId: null, profileImg: null, nickname: null });
+      setData({ userId: null, profileImg: null, nickname: null, follow: null });
       router.push('/');
     } catch {
       alert('오류가 발생했습니다. 다시 시도해주세요.');
