@@ -45,7 +45,7 @@ export default function Follow({ storeId, isFollow, setIsFollow, followCount, se
       const storeDoc = storeSnapshot.docs[0];
       const storeRef = doc(appFirestore, 'store', storeDoc.id);
 
-      if (follow?.includes(storeId)) {
+      if (isFollow) {
         await updateDoc(userRef, {
           follow: arrayRemove(storeId),
         });
@@ -54,7 +54,7 @@ export default function Follow({ storeId, isFollow, setIsFollow, followCount, se
           follower: increment(-1),
         });
 
-        const newFollow = follow.filter((id) => id !== storeId);
+        const newFollow = (follow ?? []).filter((id) => id !== storeId);
         setFollow(newFollow);
         setIsFollow(false);
         setFollowCount(followCount - 1);

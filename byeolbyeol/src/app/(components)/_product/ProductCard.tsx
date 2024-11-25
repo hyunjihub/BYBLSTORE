@@ -30,7 +30,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <li className="w-60 rounded-lg border">
-      <Link className="block relative w-full h-40 rounded-t overflow-hidden" href={`/product/${product.productId}`}>
+      <Link
+        className="block relative w-full h-40 rounded-t overflow-hidden"
+        href={`/product/${product.productId}`}
+        title={product.productName}
+      >
         <Image
           className="object-cover transform transition-transform duration-300 hover:scale-110"
           src={product.productImg[0]}
@@ -49,7 +53,11 @@ export default function ProductCard({ product }: ProductCardProps) {
             <IoHeartOutline className="cursor-pointer" />
           </div>
         </div>
-        <Link className="font-extrabold mt-1 min-h-12 product-card-name" href={`/product/${product.productId}`}>
+        <Link
+          className="font-extrabold mt-1 min-h-12 product-card-name"
+          href={`/product/${product.productId}`}
+          title={product.productName}
+        >
           {product.productName}
         </Link>
         <div className="flex items-end gap-2">

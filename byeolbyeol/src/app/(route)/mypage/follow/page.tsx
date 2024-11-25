@@ -27,7 +27,7 @@ export default function MyFollow() {
       }
     };
 
-    fetchingFollowStore();
+    if (follow && follow?.length > 0) fetchingFollowStore();
   }, [follow]);
 
   return (
