@@ -1,5 +1,6 @@
 'use client';
 
+import { GrCart } from 'react-icons/gr';
 import Image from 'next/image';
 import { IoSearch } from 'react-icons/io5';
 import Link from 'next/link';
@@ -45,6 +46,11 @@ export default function Header() {
         <li>{userId ? <button onClick={handleLogout}>LOGOUT</button> : <Link href={'/login'}>LOGIN</Link>}</li>
         <li>
           <Link href={userId ? '/mypage' : '/signup'}>{userId ? 'MYPAGE' : 'SIGNUP'}</Link>
+        </li>
+        <li>
+          <Link href={'/cart'}>
+            <GrCart className="text-xl cursor-pointer" />
+          </Link>
         </li>
         <li>
           <IoSearch className="text-xl cursor-pointer" />

@@ -14,8 +14,8 @@ export default function ProductOptions({ options, selectedOptions, setSelectedOp
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
 
-    if (selectedValue && !selectedOptions.some((option) => option.name === selectedValue)) {
-      setSelectedOptions((prev) => [...prev, { name: selectedValue, quantity: 1 }]);
+    if (selectedValue && !selectedOptions.some((option) => option.option === selectedValue)) {
+      setSelectedOptions((prev) => [...prev, { option: selectedValue, quantity: 1 }]);
     }
 
     event.target.value = '';

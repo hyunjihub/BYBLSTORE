@@ -13,7 +13,7 @@ export interface IProduct {
 }
 
 export interface ISelectedOption {
-  name: string;
+  option: string;
   quantity: number;
 }
 
@@ -34,4 +34,19 @@ export interface IUser {
   nickname: string | null;
   follow: Array<number> | null;
   profileImg: string | null;
+}
+
+export interface ICart {
+  productId: number;
+  option: string;
+  quantity: number;
+  storeName: string;
+}
+
+export interface ICartProduct {
+  productName: string;
+  originalPrice: number;
+  salePrice: number;
+  productImg: Array<string>;
+  storeId: number;
 }

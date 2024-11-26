@@ -6,6 +6,7 @@ import { IProduct, ISelectedOption } from '@/app/util/types';
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import ProductActions from './ProductActions';
 import ProductImageCarousel from './ProductImageCarousel';
 import ProductOptions from './ProductOptions';
 import { getFormattedDate } from '@/app/util/getFormattedDate';
@@ -64,7 +65,7 @@ export default function ProductHeader({ product }: { product: IProduct }) {
           <p className="font-extrabold text-sm">총 상품 금액</p>
           <p className="text-primary text-xl font-extrabold">{totalAmount.toLocaleString('ko-kr')}원</p>
         </div>
-        <button className="py-3 bg-primary rounded text-white font-extrabold">구매하기</button>
+        <ProductActions storeName={storeName} productId={product.productId} selectedOptions={selectedOptions} />
       </div>
     </article>
   );

@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 import { IProduct } from '@/app/util/types';
 import Image from 'next/image';
-import { IoCartOutline } from 'react-icons/io5';
 import { IoHeartOutline } from 'react-icons/io5';
 import Link from 'next/link';
 import useFetchStoreName from '@/app/hooks/useFetchStoreName';
@@ -48,10 +47,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Link className="font-extrabold text-sm text-primary" href={`/store/${product.storeId}`}>
             {storeName}
           </Link>
-          <div className="flex justify-end items-center gap-3 text-gray-400 text-2xl">
-            <IoCartOutline className="cursor-pointer" />
-            <IoHeartOutline className="cursor-pointer" />
-          </div>
+          <IoHeartOutline className="cursor-pointer text-lg text-gray-500" />
         </div>
         <Link
           className="font-extrabold mt-1 min-h-12 product-card-name"
