@@ -41,12 +41,12 @@ export interface ICart {
   option: string;
   quantity: number;
   storeName: string;
+  salePrice: number;
 }
 
 export interface ICartProduct {
   productName: string;
   originalPrice: number;
-  salePrice: number;
   productImg: Array<string>;
   storeId: number;
 }

@@ -10,7 +10,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { appFirestore } from '@/firebase/config';
 
-export default function CartProduct({ product }: { product: ICart }) {
+interface CartProductProps {
+  product: ICart;
+  length: number;
+  current: number;
+  selectedItems: ICart[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<ICart[]>>;
+}
+
+export default function CartProduct({ product, length, current, setSelectedItems, selectedItems }: CartProductProps) {
   const [productInfo, setProductInfo] = useState<ICartProduct | null>(null);
 
   useEffect(() => {
@@ -27,7 +35,6 @@ export default function CartProduct({ product }: { product: ICart }) {
             const productData = {
               productName: data.productName,
               originalPrice: data.originalPrice,
-              salePrice: data.salePrice,
               productImg: data.productImg,
               storeId: data.storeId,
             } as ICartProduct;
@@ -44,14 +51,26 @@ export default function CartProduct({ product }: { product: ICart }) {
     fetchProduct();
   }, [product.productId]);
 
+  const handleSelectItem = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedItems((prevSelected) => [...prevSelected, product]);
+    } else {
+      setSelectedItems((prevSelected) => prevSelected.filter((selected) => selected.option !== product.option));
+    }
+  };
+
   return (
     <>
       {productInfo && (
         <tr>
           <td className="py-4 px-6 border-b">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onChange={handleSelectItem}
+              checked={selectedItems.some((item) => item.option === product.option)}
+            />
           </td>
-          <td className="py-4 px-6 border-b text-xs font-extrabold">
+          <td className="py-4 px-6 border-b text-xs font-extrabold text-center">
             <Link href={`/store/${productInfo.storeId}`}>{product.storeName}</Link>
           </td>
           <td className="py-4 px-6 border-b flex items-center gap-2">
@@ -65,16 +84,18 @@ export default function CartProduct({ product }: { product: ICart }) {
                 />
               </Link>
               <div className="flex flex-col">
-                <Link className="font-extrabold" href={`/product/${product.productId}`}>
+                <Link className="max-w-72 font-extrabold" href={`/product/${product.productId}`}>
                   {productInfo.productName}
                 </Link>
                 <small className="p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
               </div>
             </div>
           </td>
-          <td className="py-4 px-6 border-b text-xs">{productInfo.originalPrice.toLocaleString('ko-kr')}원</td>
-          <td className="py-4 px-6 border-b text-sm text-primary font-extrabold">
-            {productInfo.salePrice.toLocaleString('ko-kr')}원
+          <td className="py-4 px-6 border-b text-xs text-center">
+            {productInfo.originalPrice.toLocaleString('ko-kr')}원
+          </td>
+          <td className="py-4 px-6 border-b text-sm text-primary font-extrabold text-center">
+            {product.salePrice.toLocaleString('ko-kr')}원
           </td>
           <td className="py-4 px-6 border-b">
             <input
@@ -84,9 +105,11 @@ export default function CartProduct({ product }: { product: ICart }) {
               defaultValue={product.quantity}
             />
           </td>
-          <td className="py-4 px-6 border-b text-xs">
-            <span>2,500원</span>
-          </td>
+          {current === 0 && (
+            <td className="py-4 px-6 border-b text-xs text-center" rowSpan={length}>
+              <span>2,500원</span>
+            </td>
+          )}
         </tr>
       )}
     </>

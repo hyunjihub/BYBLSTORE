@@ -65,7 +65,12 @@ export default function ProductHeader({ product }: { product: IProduct }) {
           <p className="font-extrabold text-sm">총 상품 금액</p>
           <p className="text-primary text-xl font-extrabold">{totalAmount.toLocaleString('ko-kr')}원</p>
         </div>
-        <ProductActions storeName={storeName} productId={product.productId} selectedOptions={selectedOptions} />
+        <ProductActions
+          storeName={storeName}
+          productId={product.productId}
+          salePrice={product.salePrice}
+          selectedOptions={selectedOptions}
+        />
       </div>
     </article>
   );

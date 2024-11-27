@@ -10,11 +10,7 @@ import { IoHeartOutline } from 'react-icons/io5';
 import Link from 'next/link';
 import useFetchStoreName from '@/app/hooks/useFetchStoreName';
 
-interface ProductCardProps {
-  product: IProduct;
-}
-
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product }: { product: IProduct }) {
   const [storeName, setStoreName] = useState('');
   const storeNameFromHook = useFetchStoreName({ storeId: product.storeId });
 

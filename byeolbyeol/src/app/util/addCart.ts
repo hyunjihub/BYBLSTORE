@@ -33,6 +33,7 @@ export default async function addCart(product: ICart, userId: string | null = nu
             quantity: product.quantity,
           },
           storeName: product.storeName,
+          salePrice: product.salePrice,
         });
       }
     } catch {

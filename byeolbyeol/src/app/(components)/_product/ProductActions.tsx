@@ -10,21 +10,28 @@ import useStore from '@/store/useStore';
 export default function ProductActions({
   storeName,
   productId,
+  salePrice,
   selectedOptions,
 }: {
   storeName: string;
   productId: number;
+  salePrice: number;
   selectedOptions: ISelectedOption[];
 }) {
   const { userId } = useStore();
 
   const handleAddToCart = async () => {
+    if (selectedOptions.length < 1) {
+      alert('옵션을 선택해주세요.');
+      return;
+    }
     for (const option of selectedOptions) {
       const productToCart = {
         productId: productId,
         option: option.option,
         quantity: option.quantity,
         storeName: storeName,
+        salePrice: salePrice,
       } as ICart;
 
       await addCart(productToCart, userId);
