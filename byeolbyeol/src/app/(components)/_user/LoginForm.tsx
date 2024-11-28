@@ -8,6 +8,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import useSaveCart from '@/app/hooks/useSaveCart';
 import { useState } from 'react';
 import useStore from '@/store/useStore';
 
@@ -24,8 +25,10 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>({ shouldUseNativeValidation: false });
-  const { setData } = useStore();
+  const { setData, userId } = useStore();
   const router = useRouter();
+
+  useSaveCart(userId);
 
   const onSubmit = async (data: LoginForm) => {
     try {
@@ -41,6 +44,7 @@ export default function LoginForm() {
           follow: userData.follow,
         };
         setData(userInfo);
+
         router.push('/');
       } else {
         setIsNotUser(true);

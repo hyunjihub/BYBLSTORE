@@ -2,17 +2,20 @@
 
 import '@/app/globals.css';
 
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import { IProduct } from '@/app/util/types';
 import ProductCard from '@/app/(components)/_product/ProductCard';
 import ProductFilter from '@/app/(components)/_product/ProductFilter';
 import { appFirestore } from '@/firebase/config';
+import useStore from '@/store/useStore';
 
 export default function Product() {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [wishProducts, setWishProducts] = useState<IProduct[]>([]);
   const [filter, setFilter] = useState<string>('new');
+  const { userId } = useStore();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,6 +40,21 @@ export default function Product() {
     fetchProduct();
   }, [filter]);
 
+  useEffect(() => {
+    const fetchWishList = async () => {
+      try {
+        const wishQuery = query(collection(appFirestore, 'wishlist'), where('userId', '==', userId));
+        const querySnapshot = await getDocs(wishQuery);
+        const products = querySnapshot.docs.map((doc) => doc.data() as IProduct);
+        setWishProducts(products);
+      } catch {
+        alert('위시리스트 정보를 불러올 수 없습니다. 다시 시도해주세요.');
+      }
+    };
+
+    if (userId) fetchWishList();
+  }, []);
+
   return (
     <section className="min-h-screen flex justify-center">
       <article className="max-w-5xl mt-40 mx-auto flex flex-col items-center">
@@ -44,7 +62,7 @@ export default function Product() {
         <ProductFilter filter={filter} setFilter={setFilter} />
         <ul className="mt-4 grid grid-cols-4 gap-5">
           {products.map((product, key) => (
-            <ProductCard product={product} key={key} />
+            <ProductCard product={product} wishList={wishProducts} key={key} />
           ))}
         </ul>
       </article>

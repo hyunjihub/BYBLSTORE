@@ -5,18 +5,21 @@ import '@/app/globals.css';
 import { OAuthProvider, signInWithCredential } from 'firebase/auth';
 import { appAuth, appFirestore } from '@/firebase/config';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import useSaveCart from '@/app/hooks/useSaveCart';
 import { useSearchParams } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 const KakaoRedirectPage = () => {
   const params = useSearchParams();
   const code = params.get('code');
-  const { setData } = useStore();
+  const { setData, userId } = useStore();
   const router = useRouter();
+
+  useSaveCart(userId);
 
   useEffect(() => {
     const handleKaKaoLogin = async () => {
@@ -72,10 +75,9 @@ const KakaoRedirectPage = () => {
               createdAt: new Date().toISOString(),
             });
           }
-
           router.push('/');
         })
-        .catch((error) => console.log(error));
+        .catch(() => alert('로그인 도중 오류가 발생했습니다.'));
     };
     if (code) handleKaKaoLogin();
   }, [code, router, setData]);

@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 
 import { IProduct } from '@/app/util/types';
 import Image from 'next/image';
-import { IoHeartOutline } from 'react-icons/io5';
 import Link from 'next/link';
+import ProductLike from '../_wishlist/ProductLike';
 import useFetchStoreName from '@/app/hooks/useFetchStoreName';
 
-export default function ProductCard({ product }: { product: IProduct }) {
+export default function ProductCard({ product, wishList }: { product: IProduct; wishList: IProduct[] }) {
   const [storeName, setStoreName] = useState('');
   const storeNameFromHook = useFetchStoreName({ storeId: product.storeId });
 
@@ -43,7 +43,7 @@ export default function ProductCard({ product }: { product: IProduct }) {
           <Link className="font-extrabold text-sm text-primary" href={`/store/${product.storeId}`}>
             {storeName}
           </Link>
-          <IoHeartOutline className="cursor-pointer text-lg text-gray-500" />
+          <ProductLike productId={product.productId} wishList={wishList} />
         </div>
         <Link
           className="font-extrabold mt-1 min-h-12 product-card-name"

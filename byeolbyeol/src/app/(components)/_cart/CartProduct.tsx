@@ -63,7 +63,7 @@ export default function CartProduct({ product, length, current, setSelectedItems
     <>
       {productInfo && (
         <tr>
-          <td className="py-4 px-6 border-b">
+          <td className="py-4 px-6 border-b text-center">
             <input
               type="checkbox"
               onChange={handleSelectItem}
@@ -97,7 +97,7 @@ export default function CartProduct({ product, length, current, setSelectedItems
           <td className="py-4 px-6 border-b text-sm text-primary font-extrabold text-center">
             {product.salePrice.toLocaleString('ko-kr')}원
           </td>
-          <td className="py-4 px-6 border-b">
+          <td className="py-4 px-6 border-b text-center">
             <input
               className="w-16 text-center product-quantity text-sm font-extrabold"
               type="number"
