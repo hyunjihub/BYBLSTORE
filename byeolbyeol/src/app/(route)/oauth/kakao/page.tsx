@@ -72,6 +72,7 @@ const KakaoRedirectPage = () => {
               profileImg: '',
               type: 'kakao',
               follow: [],
+              wish: [],
               createdAt: new Date().toISOString(),
             });
           }

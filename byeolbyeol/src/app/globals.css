@@ -36,7 +36,7 @@ body {
 }
 
 .filter:not(:last-child)::after {
-  content: ' | ';
+  content: '|';
   padding: 0 8px;
   color: #ddd;
 }

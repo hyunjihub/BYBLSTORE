@@ -38,6 +38,7 @@ export default function SignUpForm() {
         profileImg: '',
         type: 'email',
         follow: [],
+        wish: [],
         createdAt: new Date().toISOString(),
       });
       alert('정상적으로 가입되었습니다.');

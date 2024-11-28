@@ -10,7 +10,13 @@ import Link from 'next/link';
 import ProductLike from '../_wishlist/ProductLike';
 import useFetchStoreName from '@/app/hooks/useFetchStoreName';
 
-export default function ProductCard({ product, wishList }: { product: IProduct; wishList: IProduct[] }) {
+interface ProductCardProps {
+  product: IProduct;
+  wishList: number[];
+  setWishProducts: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
+export default function ProductCard({ product, wishList, setWishProducts }: ProductCardProps) {
   const [storeName, setStoreName] = useState('');
   const storeNameFromHook = useFetchStoreName({ storeId: product.storeId });
 
@@ -43,7 +49,7 @@ export default function ProductCard({ product, wishList }: { product: IProduct; 
           <Link className="font-extrabold text-sm text-primary" href={`/store/${product.storeId}`}>
             {storeName}
           </Link>
-          <ProductLike productId={product.productId} wishList={wishList} />
+          <ProductLike product={product} wishList={wishList} setWishProducts={setWishProducts} />
         </div>
         <Link
           className="font-extrabold mt-1 min-h-12 product-card-name"
