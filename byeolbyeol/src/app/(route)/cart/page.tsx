@@ -2,7 +2,7 @@
 
 import '@/app/globals.css';
 
-import CartList from '@/app/(components)/_cart/CartList';
+import CartList from '@/app/(components)/_cart-order/CartList';
 
 export default function Cart() {
   return (

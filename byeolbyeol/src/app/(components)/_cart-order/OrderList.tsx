@@ -5,21 +5,19 @@ import '@/app/globals.css';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-import CartActions from './CartActions';
-import CartProduct from './CartProduct';
-import CartSummary from '@/app/(components)/_cart/CartSummary';
 import { ICart } from '@/app/util/types';
+import OrderProduct from './OrderProduct';
+import Summary from '@/app/(components)/_cart-order/Summary';
 import { appFirestore } from '@/firebase/config';
 import useStore from '@/store/useStore';
 
-export default function CartList() {
+export default function OrderList() {
   const { userId } = useStore();
-  const [cartItems, setCartItems] = useState<ICart[]>([]);
-  const [selectedItems, setSelectedItems] = useState<ICart[]>([]);
+  const [orderProducts, setOrderProducts] = useState<ICart[]>([]);
 
   useEffect(() => {
-    const fetchCartProduct = async () => {
-      if (userId) {
+    const fetchOrderProducts = async () => {
+      if (!sessionStorage.getItem('orderProducts')) {
         try {
           const cartRef = collection(appFirestore, 'cart');
           const q = query(cartRef, where('userId', '==', userId));
@@ -37,43 +35,23 @@ export default function CartList() {
             cartData.push(cartItem);
           });
 
-          setCartItems(cartData);
-          setSelectedItems(cartData);
+          setOrderProducts(cartData);
         } catch {
-          alert('카트 정보를 불러올 수 없습니다.');
+          alert('상품 정보를 불러올 수 없습니다.');
         }
       } else {
-        const storedCart = sessionStorage.getItem('cart');
-        if (storedCart) {
-          setCartItems(JSON.parse(storedCart));
-        }
+        setOrderProducts(JSON.parse(sessionStorage.getItem('orderProducts') as string));
       }
     };
 
-    fetchCartProduct();
+    fetchOrderProducts();
   }, [userId]);
-
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedItems(cartItems);
-    } else {
-      setSelectedItems([]);
-    }
-  };
 
   return (
     <article className="w-[1020px] mt-6 flex flex-col items-center justify-center">
       <table className="min-w-full bg-gray-100">
         <thead className="text-sm">
           <tr>
-            <th className="py-2 px-4 border-b text-center flex items-center justify-center h-full">
-              <input
-                className="h-[30px]"
-                type="checkbox"
-                onChange={handleSelectAll}
-                checked={cartItems.length === selectedItems.length}
-              />
-            </th>
             <th className="py-2 px-4 border-b text-center">스토어</th>
             <th className="py-2 px-4 border-b text-center">제품/옵션</th>
             <th className="py-2 px-4 border-b text-center">상품가격</th>
@@ -83,22 +61,12 @@ export default function CartList() {
           </tr>
         </thead>
         <tbody className="bg-white border-none">
-          {cartItems.map((item, key) => {
-            return (
-              <CartProduct
-                product={item}
-                length={cartItems.length}
-                current={key}
-                key={key}
-                selectedItems={selectedItems}
-                setSelectedItems={setSelectedItems}
-              />
-            );
+          {orderProducts.map((item, key) => {
+            return <OrderProduct product={item} length={orderProducts.length} current={key} key={key} />;
           })}
         </tbody>
       </table>
-      <CartSummary selectedItems={selectedItems} />
-      <CartActions setCartItems={setCartItems} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
+      <Summary selectedItems={orderProducts} />
     </article>
   );
 }

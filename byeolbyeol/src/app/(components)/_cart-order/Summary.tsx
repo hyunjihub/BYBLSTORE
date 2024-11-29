@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 import { ICart } from '@/app/util/types';
 
-export default function CartSummary({ selectedItems }: { selectedItems: ICart[] }) {
+export default function Summary({ selectedItems }: { selectedItems: ICart[] }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 

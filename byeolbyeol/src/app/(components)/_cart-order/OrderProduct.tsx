@@ -14,11 +14,9 @@ interface CartProductProps {
   product: ICart;
   length: number;
   current: number;
-  selectedItems: ICart[];
-  setSelectedItems: React.Dispatch<React.SetStateAction<ICart[]>>;
 }
 
-export default function CartProduct({ product, length, current, setSelectedItems, selectedItems }: CartProductProps) {
+export default function OrderProduct({ product, length, current }: CartProductProps) {
   const [productInfo, setProductInfo] = useState<ICartProduct | null>(null);
 
   useEffect(() => {
@@ -51,25 +49,10 @@ export default function CartProduct({ product, length, current, setSelectedItems
     fetchProduct();
   }, [product.productId]);
 
-  const handleSelectItem = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedItems((prevSelected) => [...prevSelected, product]);
-    } else {
-      setSelectedItems((prevSelected) => prevSelected.filter((selected) => selected.option !== product.option));
-    }
-  };
-
   return (
     <>
       {productInfo && (
         <tr>
-          <td className="py-4 px-6 border-b text-center">
-            <input
-              type="checkbox"
-              onChange={handleSelectItem}
-              checked={selectedItems.some((item) => item.option === product.option)}
-            />
-          </td>
           <td className="py-4 px-6 border-b text-xs font-extrabold text-center">
             <Link href={`/store/${productInfo.storeId}`}>{product.storeName}</Link>
           </td>
@@ -84,7 +67,7 @@ export default function CartProduct({ product, length, current, setSelectedItems
                 />
               </Link>
               <div className="flex flex-col">
-                <Link className="max-w-72 font-extrabold" href={`/product/${product.productId}`}>
+                <Link className="min-w-80 font-extrabold" href={`/product/${product.productId}`}>
                   {productInfo.productName}
                 </Link>
                 <small className="p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
@@ -97,14 +80,7 @@ export default function CartProduct({ product, length, current, setSelectedItems
           <td className="py-4 px-6 border-b text-sm text-primary font-extrabold text-center">
             {product.salePrice.toLocaleString('ko-kr')}원
           </td>
-          <td className="py-4 px-6 border-b text-center">
-            <input
-              className="w-16 text-center product-quantity text-sm font-extrabold"
-              type="number"
-              min="1"
-              defaultValue={product.quantity}
-            />
-          </td>
+          <td className="py-4 px-6 border-b text-center text-sm">{product.quantity}</td>
           {current === 0 && (
             <td className="py-4 px-6 border-b text-xs text-center" rowSpan={length}>
               <span>2,500원</span>
