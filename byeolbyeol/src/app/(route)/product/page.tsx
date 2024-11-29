@@ -9,6 +9,7 @@ import { IProduct } from '@/app/util/types';
 import ProductCard from '@/app/(components)/_product/ProductCard';
 import ProductFilter from '@/app/(components)/_product/ProductFilter';
 import { appFirestore } from '@/firebase/config';
+import useFetchWishList from '@/app/hooks/useFetchWishlist';
 import useStore from '@/store/useStore';
 
 export default function Product() {
@@ -16,6 +17,17 @@ export default function Product() {
   const [wishProducts, setWishProducts] = useState<number[]>([]);
   const [filter, setFilter] = useState<string>('new');
   const { userId } = useStore();
+
+  useEffect(() => {
+    const fetchStoreNameAsync = async () => {
+      const wishlistHook = await useFetchWishList({ userId: userId as string });
+      setWishProducts(wishlistHook);
+    };
+
+    if (userId) {
+      fetchStoreNameAsync();
+    }
+  }, [userId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -39,21 +51,6 @@ export default function Product() {
 
     fetchProduct();
   }, [filter]);
-
-  useEffect(() => {
-    const fetchWishList = async () => {
-      try {
-        const userQuery = query(collection(appFirestore, 'users'), where('userId', '==', userId));
-        const querySnapshot = await getDocs(userQuery);
-        const products = querySnapshot.docs[0].data().wish;
-        setWishProducts(products);
-      } catch {
-        alert('위시리스트 정보를 불러올 수 없습니다. 다시 시도해주세요.');
-      }
-    };
-
-    if (userId) fetchWishList();
-  }, []);
 
   return (
     <section className="min-h-screen flex justify-center">
