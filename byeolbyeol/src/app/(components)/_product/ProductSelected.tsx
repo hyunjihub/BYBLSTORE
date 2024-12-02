@@ -47,7 +47,7 @@ export default function ProductSelected({ index, selectedOption, setSelectedOpti
           -
         </button>
         <input
-          className="product-quantity w-10 h-7 border rounded px-2 py-1 font-extrabold text-sm text-center"
+          className="w-10 h-7 border rounded px-2 py-1 font-extrabold text-sm text-center"
           type="number"
           value={selectedOption.quantity}
           onChange={(e) => handleQuantityChange(index, Number(e.target.value))}

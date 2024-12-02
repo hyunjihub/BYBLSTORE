@@ -50,3 +50,21 @@ export interface ICartProduct {
   productImg: Array<string>;
   storeId: number;
 }
+
+export interface IOrderForm {
+  orderer: IOrderer;
+  receiver: IReceiver;
+}
+
+export interface IOrderer {
+  name?: string | null;
+  phone?: number | null;
+  zipCode?: string | null;
+  address?: string | null;
+  detailAddress?: string | null;
+}
+
+export interface IReceiver extends IOrderer {
+  deliveryMessage: string | null;
+  customMessage: string | null;
+}

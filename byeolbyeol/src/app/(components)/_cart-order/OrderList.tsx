@@ -2,50 +2,32 @@
 
 import '@/app/globals.css';
 
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import { ICart } from '@/app/util/types';
+import OrderForm from './OrderForm';
 import OrderProduct from './OrderProduct';
 import Summary from '@/app/(components)/_cart-order/Summary';
-import { appFirestore } from '@/firebase/config';
+import { useRouter } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 export default function OrderList() {
   const { userId } = useStore();
   const [orderProducts, setOrderProducts] = useState<ICart[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOrderProducts = async () => {
       if (!sessionStorage.getItem('orderProducts')) {
-        try {
-          const cartRef = collection(appFirestore, 'cart');
-          const q = query(cartRef, where('userId', '==', userId));
-          const querySnapshot = await getDocs(q);
-
-          const cartData: ICart[] = [];
-          querySnapshot.forEach((doc) => {
-            const cartItem = {
-              productId: doc.data().productId,
-              quantity: doc.data().product.quantity,
-              option: doc.data().product.option,
-              storeName: doc.data().storeName,
-              salePrice: doc.data().salePrice,
-            } as ICart;
-            cartData.push(cartItem);
-          });
-
-          setOrderProducts(cartData);
-        } catch {
-          alert('상품 정보를 불러올 수 없습니다.');
-        }
+        alert('올바르지 않은 접근입니다.');
+        router.push('/');
       } else {
         setOrderProducts(JSON.parse(sessionStorage.getItem('orderProducts') as string));
       }
     };
 
     fetchOrderProducts();
-  }, [userId]);
+  }, [userId, router]);
 
   return (
     <article className="w-[1020px] mt-6 flex flex-col items-center justify-center">
@@ -67,6 +49,7 @@ export default function OrderList() {
         </tbody>
       </table>
       <Summary selectedItems={orderProducts} />
+      <OrderForm />
     </article>
   );
 }

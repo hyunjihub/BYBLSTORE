@@ -6,6 +6,7 @@ import { ICart, ICartProduct } from '@/app/util/types';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
+import CartQuantity from './CartQuantity';
 import Image from 'next/image';
 import Link from 'next/link';
 import { appFirestore } from '@/firebase/config';
@@ -16,9 +17,17 @@ interface CartProductProps {
   current: number;
   selectedItems: ICart[];
   setSelectedItems: React.Dispatch<React.SetStateAction<ICart[]>>;
+  setCartItems: React.Dispatch<React.SetStateAction<ICart[]>>;
 }
 
-export default function CartProduct({ product, length, current, setSelectedItems, selectedItems }: CartProductProps) {
+export default function CartProduct({
+  product,
+  length,
+  current,
+  setSelectedItems,
+  selectedItems,
+  setCartItems,
+}: CartProductProps) {
   const [productInfo, setProductInfo] = useState<ICartProduct | null>(null);
 
   useEffect(() => {
@@ -84,7 +93,7 @@ export default function CartProduct({ product, length, current, setSelectedItems
                 />
               </Link>
               <div className="flex flex-col">
-                <Link className="min-w-72 font-extrabold" href={`/product/${product.productId}`}>
+                <Link className="max-w-60 font-extrabold" href={`/product/${product.productId}`}>
                   {productInfo.productName}
                 </Link>
                 <small className="p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
@@ -98,12 +107,7 @@ export default function CartProduct({ product, length, current, setSelectedItems
             {product.salePrice.toLocaleString('ko-kr')}원
           </td>
           <td className="py-4 px-6 border-b text-center">
-            <input
-              className="w-16 text-center product-quantity text-sm font-extrabold"
-              type="number"
-              min="1"
-              defaultValue={product.quantity}
-            />
+            <CartQuantity product={product} setCartItems={setCartItems} setSelectedItems={setSelectedItems} />
           </td>
           {current === 0 && (
             <td className="py-4 px-6 border-b text-xs text-center" rowSpan={length}>

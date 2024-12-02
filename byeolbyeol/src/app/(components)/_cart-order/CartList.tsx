@@ -61,6 +61,10 @@ export default function CartList() {
     }
   };
 
+  useEffect(() => {
+    console.log(selectedItems);
+  }, [selectedItems]);
+
   return (
     <article className="w-[1020px] mt-6 flex flex-col items-center justify-center">
       <table className="min-w-full bg-gray-100">
@@ -92,13 +96,19 @@ export default function CartList() {
                 key={key}
                 selectedItems={selectedItems}
                 setSelectedItems={setSelectedItems}
+                setCartItems={setCartItems}
               />
             );
           })}
         </tbody>
       </table>
       <Summary selectedItems={selectedItems} />
-      <CartActions setCartItems={setCartItems} selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
+      <CartActions
+        cartItems={cartItems}
+        setCartItems={setCartItems}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+      />
     </article>
   );
 }

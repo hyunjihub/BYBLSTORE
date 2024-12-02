@@ -5,18 +5,18 @@ import '@/app/globals.css';
 import { collection, deleteDoc, getDocs, query, where } from 'firebase/firestore';
 
 import { ICart } from '@/app/util/types';
-import Link from 'next/link';
 import { appFirestore } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 interface CartProductProps {
+  cartItems: ICart[];
   setCartItems: React.Dispatch<React.SetStateAction<ICart[]>>;
   selectedItems: ICart[];
   setSelectedItems: React.Dispatch<React.SetStateAction<ICart[]>>;
 }
 
-export default function CartActions({ setCartItems, selectedItems, setSelectedItems }: CartProductProps) {
+export default function CartActions({ cartItems, setCartItems, selectedItems, setSelectedItems }: CartProductProps) {
   const { userId } = useStore();
   const router = useRouter();
 
@@ -80,6 +80,11 @@ export default function CartActions({ setCartItems, selectedItems, setSelectedIt
     }
   };
 
+  const handleAllOrder = () => {
+    sessionStorage.setItem('orderProducts', JSON.stringify(cartItems));
+    router.push('/order');
+  };
+
   return (
     <div className="mt-5 w-full flex justify-between items-center text-sm">
       <button className="bg-gray-200 rounded-lg px-5 py-2" onClick={handleRemoveCart}>
@@ -89,9 +94,9 @@ export default function CartActions({ setCartItems, selectedItems, setSelectedIt
         <button className="bg-gray-200 rounded-lg px-5 py-2" onClick={handleSelectedOrder}>
           선택 상품 구매
         </button>
-        <Link className="bg-primary text-white rounded-lg px-5 py-2" href={'/order'} role="button">
+        <button className="bg-primary text-white rounded-lg px-5 py-2" onClick={handleAllOrder}>
           전체 상품 구매
-        </Link>
+        </button>
       </div>
     </div>
   );
