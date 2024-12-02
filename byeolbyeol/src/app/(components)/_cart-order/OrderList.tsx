@@ -49,7 +49,7 @@ export default function OrderList() {
         </tbody>
       </table>
       <Summary selectedItems={orderProducts} />
-      <OrderForm />
+      <OrderForm orderProducts={orderProducts} />
     </article>
   );
 }

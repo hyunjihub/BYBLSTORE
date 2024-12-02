@@ -2,17 +2,50 @@
 
 import '@/app/globals.css';
 
+import { ICart, IOrderForm } from '@/app/util/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
-import { IOrderForm } from '@/app/util/types';
 import Orderer from './Orderer';
 import Receiver from './Receiver';
+import { appFirestore } from '@/firebase/config';
+import useStore from '@/store/useStore';
 
-export default function OrderForm() {
+export default function OrderForm({ orderProducts }: { orderProducts: ICart[] }) {
+  const { userId } = useStore();
   const { register, handleSubmit, watch, setValue } = useForm<IOrderForm>();
+  const orderPrice = orderProducts.reduce((total, item) => total + item.salePrice * item.quantity, 0);
 
-  const onSubmit: SubmitHandler<IOrderForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<IOrderForm> = async (data) => {
+    try {
+      const userDoc = doc(collection(appFirestore, 'orders'));
+      await setDoc(userDoc, {
+        userId: userId,
+        productPrice: orderPrice,
+        deliveryPrice: 2500,
+        products: orderProducts,
+        orderer: data.orderer,
+        receiver: data.receiver,
+        orderedAt: new Date().toISOString(),
+      });
+
+      const cartQuery = query(collection(appFirestore, 'cart'), where('userId', '==', userId));
+      const cartSnapshot = await getDocs(cartQuery);
+      for (const docSnap of cartSnapshot.docs) {
+        const cartData = docSnap.data();
+        for (const orderProduct of orderProducts) {
+          if (cartData.product.option === orderProduct.option) {
+            await deleteDoc(docSnap.ref);
+          }
+        }
+      }
+
+      sessionStorage.removeItem('orderProducts');
+
+      alert('정상적으로 구매 완료되었습니다.');
+    } catch {
+      alert('구매 도중 오류가 발생했습니다.');
+    }
   };
 
   return (
