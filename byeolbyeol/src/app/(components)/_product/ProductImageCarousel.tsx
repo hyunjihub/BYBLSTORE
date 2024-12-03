@@ -25,15 +25,19 @@ export default function ProductImageCarousel({
 
   return (
     <div className="relative w-[450px] h-[450px]">
-      <Slider {...settings}>
-        {productImg.map((img, key) => {
-          return (
+      {productImg.length > 1 ? (
+        <Slider {...settings}>
+          {productImg.map((img, key) => (
             <div className="relative w-[450px] h-[450px]" key={key}>
               <Image className="object-cover" src={img} alt={productName} fill priority />
             </div>
-          );
-        })}
-      </Slider>
+          ))}
+        </Slider>
+      ) : (
+        <div className="relative w-[450px] h-[450px]">
+          <Image className="object-cover" src={productImg[0]} alt={productName} fill priority />
+        </div>
+      )}
     </div>
   );
 }

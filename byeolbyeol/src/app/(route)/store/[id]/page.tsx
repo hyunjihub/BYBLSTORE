@@ -9,12 +9,28 @@ import { useEffect, useState } from 'react';
 import ProductCard from '@/app/(components)/_product/ProductCard';
 import StoreInfo from '@/app/(components)/_store/StoreInfo';
 import { appFirestore } from '@/firebase/config';
+import useFetchWishList from '@/app/hooks/useFetchWishlist';
 import { useParams } from 'next/navigation';
+import useStore from '@/store/useStore';
 
 export default function StoreDetail() {
   const { id } = useParams();
+  const { userId } = useStore();
   const [store, setStore] = useState<IStore | null>(null);
   const [storeProduct, setStoreProduct] = useState<IProduct[] | null>(null);
+  const [wishProducts, setWishProducts] = useState<number[]>([]);
+  const wishlistHook = useFetchWishList({ userId: userId as string });
+
+  useEffect(() => {
+    const fetchStoreNameAsync = async () => {
+      const wish = await wishlistHook;
+      setWishProducts(wish);
+    };
+
+    if (userId) {
+      fetchStoreNameAsync();
+    }
+  }, [wishlistHook, userId]);
 
   useEffect(() => {
     const fetchStore = async () => {
@@ -60,7 +76,7 @@ export default function StoreDetail() {
         {storeProduct && (
           <ul className="mt-8 grid grid-cols-4 gap-5">
             {storeProduct.map((product, key) => (
-              <ProductCard product={product} key={key} />
+              <ProductCard wishList={wishProducts} setWishProducts={setWishProducts} product={product} key={key} />
             ))}
           </ul>
         )}

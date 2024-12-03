@@ -2,7 +2,7 @@
 
 import '@/app/globals.css';
 
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 import { IProduct } from '@/app/util/types';
@@ -17,17 +17,18 @@ export default function Product() {
   const [wishProducts, setWishProducts] = useState<number[]>([]);
   const [filter, setFilter] = useState<string>('new');
   const { userId } = useStore();
+  const wishlistHook = useFetchWishList({ userId: userId as string });
 
   useEffect(() => {
     const fetchStoreNameAsync = async () => {
-      const wishlistHook = await useFetchWishList({ userId: userId as string });
-      setWishProducts(wishlistHook);
+      const wish = await wishlistHook;
+      setWishProducts(wish);
     };
 
     if (userId) {
       fetchStoreNameAsync();
     }
-  }, [userId]);
+  }, [wishlistHook, userId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
