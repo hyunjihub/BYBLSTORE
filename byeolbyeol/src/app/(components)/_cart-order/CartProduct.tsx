@@ -96,7 +96,7 @@ export default function CartProduct({
                 <Link className="max-w-60 font-extrabold" href={`/product/${product.productId}`}>
                   {productInfo.productName}
                 </Link>
-                <small className="p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
+                <small className="max-w-60 p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
               </div>
             </div>
           </td>

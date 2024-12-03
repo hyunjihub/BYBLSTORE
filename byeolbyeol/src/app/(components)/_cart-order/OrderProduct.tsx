@@ -67,10 +67,10 @@ export default function OrderProduct({ product, length, current }: CartProductPr
                 />
               </Link>
               <div className="flex flex-col">
-                <Link className="min-w-80 font-extrabold" href={`/product/${product.productId}`}>
+                <Link className="max-w-96 font-extrabold" href={`/product/${product.productId}`}>
                   {productInfo.productName}
                 </Link>
-                <small className="p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
+                <small className="max-w-96 p-0 text-gray-400 text-[11px]">옵션 : {product.option}</small>
               </div>
             </div>
           </td>

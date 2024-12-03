@@ -9,6 +9,7 @@ import { collection, deleteDoc, doc, getDocs, query, setDoc, where } from 'fireb
 import Orderer from './Orderer';
 import Receiver from './Receiver';
 import { appFirestore } from '@/firebase/config';
+import { getOrderNum } from '@/app/util/getOrderNum';
 import useStore from '@/store/useStore';
 
 export default function OrderForm({ orderProducts }: { orderProducts: ICart[] }) {
@@ -16,8 +17,26 @@ export default function OrderForm({ orderProducts }: { orderProducts: ICart[] })
   const { register, handleSubmit, watch, setValue } = useForm<IOrderForm>();
   const orderPrice = orderProducts.reduce((total, item) => total + item.salePrice * item.quantity, 0);
 
+  const handleUniqueOrderNumber = async (): Promise<string> => {
+    let orderNum = '';
+    let isUnique = false;
+
+    while (!isUnique) {
+      orderNum = getOrderNum();
+      const orderQuery = query(collection(appFirestore, 'orders'), where('orderNum', '==', orderNum));
+      const orderSnapshot = await getDocs(orderQuery);
+      if (orderSnapshot.empty) {
+        isUnique = true;
+      }
+    }
+
+    return orderNum;
+  };
+
   const onSubmit: SubmitHandler<IOrderForm> = async (data) => {
     try {
+      const orderNum = await handleUniqueOrderNumber();
+
       const userDoc = doc(collection(appFirestore, 'orders'));
       await setDoc(userDoc, {
         userId: userId,
@@ -27,6 +46,7 @@ export default function OrderForm({ orderProducts }: { orderProducts: ICart[] })
         orderer: data.orderer,
         receiver: data.receiver,
         orderedAt: new Date().toISOString(),
+        orderNum: orderNum,
       });
 
       const cartQuery = query(collection(appFirestore, 'cart'), where('userId', '==', userId));
