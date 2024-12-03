@@ -10,12 +10,14 @@ import Orderer from './Orderer';
 import Receiver from './Receiver';
 import { appFirestore } from '@/firebase/config';
 import { getOrderNum } from '@/app/util/getOrderNum';
+import { useRouter } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 export default function OrderForm({ orderProducts }: { orderProducts: ICart[] }) {
   const { userId } = useStore();
   const { register, handleSubmit, watch, setValue } = useForm<IOrderForm>();
   const orderPrice = orderProducts.reduce((total, item) => total + item.salePrice * item.quantity, 0);
+  const router = useRouter();
 
   const handleUniqueOrderNumber = async (): Promise<string> => {
     let orderNum = '';
@@ -61,8 +63,7 @@ export default function OrderForm({ orderProducts }: { orderProducts: ICart[] })
       }
 
       sessionStorage.removeItem('orderProducts');
-
-      alert('정상적으로 구매 완료되었습니다.');
+      router.push(`/order/success?ordernum=${orderNum}`);
     } catch {
       alert('구매 도중 오류가 발생했습니다.');
     }
