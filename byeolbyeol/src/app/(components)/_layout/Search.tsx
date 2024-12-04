@@ -3,7 +3,7 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-import { IoSearch } from 'react-icons/io5';
+import AsyncSelect from 'react-select/async';
 import { appFirestore } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +11,6 @@ export default function Search({ setIsSearching }: { setIsSearching: React.Dispa
   const [searchWord, setSearchWord] = useState('');
   const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
-  const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -36,48 +35,35 @@ export default function Search({ setIsSearching }: { setIsSearching: React.Dispa
     fetchTags();
   }, []);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setIsSearching(false);
-      handleSearchWordClick(searchWord.trim());
-    }
+  const loadOptions = async (inputValue: string) => {
+    if (!inputValue) return [];
+    const filteredTags = Array.from(tags).filter((tag) => tag.toLowerCase().includes(inputValue.toLowerCase()));
+
+    return filteredTags.map((tag) => ({
+      label: tag,
+      value: tag,
+    }));
   };
 
-  const handleSearchClick = () => {
-    setIsSearching(false);
-    if (searchWord.trim()) {
-      router.push(`/search?word=${encodeURIComponent(searchWord.trim())}`);
-    }
-  };
-
-  const handleSearchWordClick = (tag: string) => {
+  const handleSearchWordClick = (tag: string | undefined) => {
+    if (!tag) return;
     setIsSearching(false);
     router.push(`/search?word=${encodeURIComponent(tag)}`);
   };
 
   return (
     <div className="mt-2 w-96 h-24 absolute right-20 top-full z-50">
-      <div className="relative">
-        <input
-          list="searchWords"
-          className="w-full border border-gray-400 text-sm px-3 py-2 outline-none"
-          placeholder="제품명, 업체명을 입력해주세요"
-          value={searchWord || ''}
-          onChange={(e) => setSearchWord(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onFocus={() => setIsFocus(true)}
-        />
-        {isFocus && (
-          <datalist id="searchWords" className="absolute bg-white w-full border max-h-40 overflow-y-scroll">
-            {tags.map((tag, index) => (
-              <option key={index} onClick={() => handleSearchWordClick(tag)} value={tag}>
-                {tag}
-              </option>
-            ))}
-          </datalist>
-        )}
-      </div>
-      <IoSearch className="absolute right-5 top-2 text-xl" onClick={handleSearchClick} />
+      <AsyncSelect
+        cacheOptions
+        loadOptions={loadOptions}
+        className="w-full text-sm px-3 py-2 outline-none"
+        placeholder="제품명, 업체명을 입력해주세요"
+        value={{ label: searchWord, value: searchWord }}
+        onChange={(selectedOption) => handleSearchWordClick(selectedOption?.value)}
+        inputValue={searchWord}
+        onInputChange={(value) => setSearchWord(value)}
+        isClearable
+      />
     </div>
   );
 }
