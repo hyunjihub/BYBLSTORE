@@ -10,6 +10,7 @@ export interface IProduct {
   options: Array<string>;
   productInfo: Array<string>;
   createdAt: Timestamp;
+  tag: Array<string>;
 }
 
 export interface ISelectedOption {
@@ -51,6 +52,13 @@ export interface ICartProduct {
   storeId: number;
 }
 
+export interface IOrderProduct {
+  productName: string;
+  productImg: Array<string>;
+  productId: number;
+  storeId: number;
+}
+
 export interface IOrderForm {
   orderer: IOrderer;
   receiver: IReceiver;
@@ -67,4 +75,15 @@ export interface IOrderer {
 export interface IReceiver extends IOrderer {
   deliveryMessage: string | null;
   customMessage: string | null;
+}
+
+export interface IOrder {
+  orderer: IOrderer;
+  receiver: IReceiver;
+  products: ICart[];
+  orderNum: string;
+  orderedAt: Timestamp;
+  deliveryPrice: number;
+  productPrice: number;
+  userId: string;
 }
