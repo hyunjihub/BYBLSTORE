@@ -56,7 +56,7 @@ export default function Search({ setIsSearching }: { setIsSearching: React.Dispa
       <AsyncSelect
         cacheOptions
         loadOptions={loadOptions}
-        className="w-full text-sm px-3 py-2 outline-none"
+        className="w-full text-sm outline-none"
         placeholder="제품명, 업체명을 입력해주세요"
         value={{ label: searchWord, value: searchWord }}
         onChange={(selectedOption) => handleSearchWordClick(selectedOption?.value)}
