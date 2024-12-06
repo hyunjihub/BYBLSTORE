@@ -2,58 +2,29 @@
 
 import '@/app/globals.css';
 
-import { IProduct, IStore } from '@/app/util/types';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-import ProductCard from '@/app/(components)/_product/ProductCard';
-import StoreInfo from '@/app/(components)/_store/StoreInfo';
+import { IStore } from '@/app/util/types';
+import StoreProduct from '@/app/(components)/_store/StoreProducts';
 import { appFirestore } from '@/firebase/config';
-import useFetchWishList from '@/app/hooks/useFetchWishlist';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
-import useStore from '@/store/useStore';
+
+const StoreInfo = dynamic(() => import('@/app/(components)/_store/StoreInfo'));
 
 export default function StoreDetail() {
   const { id } = useParams();
-  const { userId } = useStore();
   const [store, setStore] = useState<IStore | null>(null);
-  const [storeProduct, setStoreProduct] = useState<IProduct[] | null>(null);
-  const [wishProducts, setWishProducts] = useState<number[]>([]);
-  const wishlistHook = useFetchWishList({ userId: userId as string });
-
-  useEffect(() => {
-    const fetchStoreNameAsync = async () => {
-      const wish = await wishlistHook;
-      setWishProducts(wish);
-    };
-
-    if (userId) {
-      fetchStoreNameAsync();
-    }
-  }, [wishlistHook, userId]);
 
   useEffect(() => {
     const fetchStore = async () => {
       try {
-        let q = query(collection(appFirestore, 'store'), where('storeId', '==', Number(id)));
-        let querySnapshot = await getDocs(q);
+        const q = query(collection(appFirestore, 'store'), where('storeId', '==', Number(id)));
+        const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
           setStore(querySnapshot.docs[0].data() as IStore);
-
-          try {
-            q = query(collection(appFirestore, 'product'), where('storeId', '==', Number(id)));
-            querySnapshot = await getDocs(q);
-
-            if (!querySnapshot.empty) {
-              const products = querySnapshot.docs.map((doc) => doc.data() as IProduct);
-              setStoreProduct(products);
-            } else {
-              setStoreProduct([]);
-            }
-          } catch {
-            alert('오류가 발생했습니다. 다시 시도해주세요.');
-          }
         } else {
           alert('스토어 정보를 찾을 수 없습니다.');
         }
@@ -71,16 +42,7 @@ export default function StoreDetail() {
         <h2 className="font-black text-3xl">STORE</h2>
         {store && <StoreInfo store={store} />}
       </article>
-      <article className="max-w-5xl mt-24 mb-40 mx-auto flex flex-col items-center">
-        <h2 className="font-black text-3xl">PRODUCT</h2>
-        {storeProduct && (
-          <ul className="mt-8 grid grid-cols-4 gap-5">
-            {storeProduct.map((product, key) => (
-              <ProductCard wishList={wishProducts} setWishProducts={setWishProducts} product={product} key={key} />
-            ))}
-          </ul>
-        )}
-      </article>
+      <StoreProduct storeId={Number(id)} />
     </section>
   );
 }
