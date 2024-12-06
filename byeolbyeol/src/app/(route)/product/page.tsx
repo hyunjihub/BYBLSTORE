@@ -34,8 +34,39 @@ export default function Product() {
     }
   }, [wishlistHook, userId]);
 
-  const fetchProducts = useCallback(async () => {
+  const firstFetchProducts = useCallback(async () => {
     if (loading) return;
+    setLoading(true);
+    try {
+      let productQuery;
+      if (filter === 'new') {
+        productQuery = query(collection(appFirestore, 'product'), orderBy('createdAt', 'desc'), limit(4));
+      } else if (filter === 'ascending') {
+        productQuery = query(collection(appFirestore, 'product'), orderBy('salePrice', 'asc'), limit(4));
+      } else {
+        productQuery = query(collection(appFirestore, 'product'), orderBy('salePrice', 'desc'), limit(4));
+      }
+
+      const querySnapshot = await getDocs(productQuery);
+      if (querySnapshot.empty) {
+        setProductEnd(true);
+      }
+      const newProducts = querySnapshot.docs.map((doc) => doc.data() as IProduct);
+      setProducts(newProducts);
+      setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
+    } catch {
+      alert('상품 정보를 불러올 수 없습니다. 다시 시도해주세요.');
+    } finally {
+      setLoading(false);
+    }
+  }, [filter, loading]);
+
+  useEffect(() => {
+    firstFetchProducts();
+  }, [filter]);
+
+  const fetchProducts = useCallback(async () => {
+    if (loading || productEnd) return;
 
     setLoading(true);
     try {
@@ -45,30 +76,29 @@ export default function Product() {
           collection(appFirestore, 'product'),
           orderBy('createdAt', 'desc'),
           ...(lastVisible ? [startAfter(lastVisible)] : []),
-          limit(4)
+          limit(12)
         );
       } else if (filter === 'ascending') {
         productQuery = query(
           collection(appFirestore, 'product'),
           orderBy('salePrice', 'asc'),
           ...(lastVisible ? [startAfter(lastVisible)] : []),
-          limit(4)
+          limit(12)
         );
       } else {
         productQuery = query(
           collection(appFirestore, 'product'),
           orderBy('salePrice', 'desc'),
           ...(lastVisible ? [startAfter(lastVisible)] : []),
-          limit(4)
+          limit(12)
         );
       }
 
       const querySnapshot = await getDocs(productQuery);
-      if (querySnapshot.empty) {
+      const newProducts = querySnapshot.docs.map((doc) => doc.data() as IProduct);
+      if (newProducts.length < 12 && querySnapshot.empty) {
         setProductEnd(true);
       }
-      const newProducts = querySnapshot.docs.map((doc) => doc.data() as IProduct);
-
       setProducts((prevProducts) => [...prevProducts, ...newProducts]);
       setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1]);
     } catch {
@@ -76,7 +106,7 @@ export default function Product() {
     } finally {
       setLoading(false);
     }
-  }, [filter, lastVisible, loading]);
+  }, [filter, lastVisible, loading, productEnd]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -97,20 +127,12 @@ export default function Product() {
     };
   }, [fetchProducts, loading, productEnd]);
 
-  useEffect(() => {
-    // 필터 변경 시 초기화
-    setProducts([]);
-    setLastVisible(null);
-    setProductEnd(false);
-    fetchProducts();
-  }, [filter]);
-
   return (
     <section className="min-h-screen flex justify-center">
       <article className="max-w-5xl mt-40 mx-auto flex flex-col items-center">
         <h1 className="font-black text-3xl">PRODUCT</h1>
-        <ProductFilter filter={filter} setFilter={setFilter} />
-        <ul className="mt-3 grid grid-cols-4 gap-5">
+        <ProductFilter filter={filter} setFilter={setFilter} setProductEnd={setProductEnd} />
+        <ul className="mt-3 grid grid-cols-4 gap-5 mb-32">
           {products.map((product, key) => (
             <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
           ))}

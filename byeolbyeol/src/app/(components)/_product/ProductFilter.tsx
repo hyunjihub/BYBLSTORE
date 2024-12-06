@@ -7,9 +7,15 @@ import { PRODUCT_FILTER } from '@/app/util/constant';
 interface ProductFilterProps {
   filter: string;
   setFilter: React.Dispatch<React.SetStateAction<string>>;
+  setProductEnd: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function ProductFilter({ filter, setFilter }: ProductFilterProps) {
+export default function ProductFilter({ filter, setFilter, setProductEnd }: ProductFilterProps) {
+  const handleChangeFilter = (chagingFilter: string) => {
+    setFilter(chagingFilter);
+    setProductEnd(false);
+  };
+
   return (
     <ul className="w-full mt-12 text-xs flex justify-end">
       {Object.keys(PRODUCT_FILTER).map((item, key) => {
@@ -18,7 +24,7 @@ export default function ProductFilter({ filter, setFilter }: ProductFilterProps)
           <li
             className={`filter ${filter === PRODUCT_FILTER[typedFilter] ? 'font-extrabold' : ''}`}
             key={key}
-            onClick={() => setFilter(PRODUCT_FILTER[typedFilter])}
+            onClick={() => handleChangeFilter(PRODUCT_FILTER[typedFilter])}
           >
             {item}
           </li>

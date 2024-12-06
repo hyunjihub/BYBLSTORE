@@ -22,13 +22,12 @@ export default function RecommendCarousel() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const randomArr = Array.from({ length: 8 }, (_, index) => index + 1)
+        const randomArr = Array.from({ length: 10 }, (_, index) => index + 1)
           .sort(() => Math.random() - 0.5)
           .slice(0, 8);
         const productQuery = query(collection(appFirestore, 'product'), where('productId', 'in', randomArr));
         const querySnapshot = await getDocs(productQuery);
         const products = querySnapshot.docs.map((doc) => doc.data() as IProduct);
-        console.log(products);
         setProducts(products);
       } catch {
         alert('상품 정보를 불러올 수 없습니다. 다시 시도해주세요.');
