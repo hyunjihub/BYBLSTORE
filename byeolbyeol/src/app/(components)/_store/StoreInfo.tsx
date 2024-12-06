@@ -21,8 +21,8 @@ export default function StoreInfo({ store }: { store: IStore }) {
 
   return (
     <div className="w-[1020px] mt-8 rounded-lg border flex">
-      <div className="relative w-96 w-48 object-cover">
-        <Image className="rounded-l-lg" src={store.storeImg} alt={store.storeName} fill priority />
+      <div className="relative w-96 w-48 ">
+        <Image className="rounded-l-lg object-cover" src={store.storeImg} alt={store.storeName} fill priority />
       </div>
 
       <div className="px-10 py-5 flex-1">

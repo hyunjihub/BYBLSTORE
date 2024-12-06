@@ -58,7 +58,7 @@ export default function Product() {
       <article className="max-w-5xl mt-40 mx-auto flex flex-col items-center">
         <h1 className="font-black text-3xl">PRODUCT</h1>
         <ProductFilter filter={filter} setFilter={setFilter} />
-        <ul className="mt-4 grid grid-cols-4 gap-5">
+        <ul className="mt-3 grid grid-cols-4 gap-5">
           {products.map((product, key) => (
             <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
           ))}

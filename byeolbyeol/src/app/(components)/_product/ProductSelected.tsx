@@ -32,7 +32,7 @@ export default function ProductSelected({ index, selectedOption, setSelectedOpti
   return (
     <div className="w-full flex justify-between items-center my-3">
       <div className="flex">
-        <p className="mr-3 text-sm">{selectedOption.option}</p>
+        <p className="max-w-80 text-sm truncate">{selectedOption.option}</p>
         <button className="ml-2 text-red-500 text-sm" onClick={() => handleRemoveOption(selectedOption.option)}>
           <IoClose />
         </button>

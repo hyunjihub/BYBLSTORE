@@ -11,7 +11,7 @@ interface ProductFilterProps {
 
 export default function ProductFilter({ filter, setFilter }: ProductFilterProps) {
   return (
-    <ul className="w-full mt-12 text-sm flex justify-end">
+    <ul className="w-full mt-12 text-xs flex justify-end">
       {Object.keys(PRODUCT_FILTER).map((item, key) => {
         const typedFilter = item as keyof typeof PRODUCT_FILTER;
         return (

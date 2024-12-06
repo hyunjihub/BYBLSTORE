@@ -37,7 +37,7 @@ export default function ProductHeader({ product }: { product: IProduct }) {
     <article className="max-w-5xl mt-24 flex gap-10">
       <ProductImageCarousel productImg={product.productImg} productName={product.productName} />
       <div className="w-[500px] flex flex-col gap-2">
-        <Link className="mt-5 text-primary font-bold" href={`/store/${product.storeId}`}>
+        <Link className="text-primary font-bold" href={`/store/${product.storeId}`}>
           {storeName}
         </Link>
         <h1 className="font-extrabold text-3xl">{product.productName}</h1>
