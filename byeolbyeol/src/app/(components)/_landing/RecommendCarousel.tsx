@@ -56,23 +56,27 @@ export default function RecommendCarousel() {
 
   return (
     <section className="mx-auto mt-14 flex items-center justify-center">
-      <IoIosArrowBack className="text-4xl mr-4" onClick={() => handleArrowClick('prev')} />
-      <div className="w-[1020px]">
-        <h2 className="font-extrabold text-xl flex">
-          {nickname && (
-            <p>
-              <span className="text-primary">{nickname}</span>
-              님,&nbsp;
-            </p>
-          )}
-          이런 상품은 어떠세요?
-        </h2>
-        <Slider ref={sliderRef} className="w-full mt-3" {...settings}>
-          <MainProduct products={products.slice(0, 4)} />
-          <MainProduct products={products.slice(4)} />
-        </Slider>
-      </div>
-      <IoIosArrowForward className="text-4xl ml-4" onClick={() => handleArrowClick('next')} />
+      {products.length > 0 && (
+        <>
+          <IoIosArrowBack className="text-4xl mr-4" onClick={() => handleArrowClick('prev')} />
+          <div className="w-[1020px]">
+            <h2 className="font-extrabold text-xl flex">
+              {nickname && (
+                <p>
+                  <span className="text-primary">{nickname}</span>
+                  님,&nbsp;
+                </p>
+              )}
+              이런 상품은 어떠세요?
+            </h2>
+            <Slider ref={sliderRef} className="w-full mt-3" {...settings}>
+              <MainProduct products={products.slice(0, 4)} />
+              <MainProduct products={products.slice(4)} />
+            </Slider>
+          </div>
+          <IoIosArrowForward className="text-4xl ml-4" onClick={() => handleArrowClick('next')} />
+        </>
+      )}
     </section>
   );
 }
