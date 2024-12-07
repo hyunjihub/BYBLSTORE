@@ -1,52 +1,53 @@
 'use client';
 
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-import Follow from './Follow';
 import { IStore } from '@/app/util/types';
 import Image from 'next/image';
-import useStore from '@/store/useStore';
+import StoreDetail from './StoreDetail';
+import { appFirestore } from '@/firebase/config';
 
-export default function StoreInfo({ store }: { store: IStore }) {
-  const { follow } = useStore();
-  const [isFollow, setIsFollow] = useState(false);
-  const [followCount, setFollowCount] = useState(0);
+export default function StoreInfo({ storeId }: { storeId: number }) {
+  const [store, setStore] = useState<IStore | null>(null);
 
   useEffect(() => {
-    if (follow && store?.storeId) {
-      setIsFollow(follow.includes(store.storeId));
-      setFollowCount(store.follower);
-    }
-  }, [follow, store.storeId, store.follower]);
+    const fetchStore = async () => {
+      try {
+        const q = query(collection(appFirestore, 'store'), where('storeId', '==', storeId));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          setStore(querySnapshot.docs[0].data() as IStore);
+        } else {
+          alert('스토어 정보를 찾을 수 없습니다.');
+        }
+      } catch {
+        alert('오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    };
+
+    fetchStore();
+  }, [storeId]);
 
   return (
-    <div className="w-[1020px] mt-8 rounded-lg border flex">
-      <div className="relative w-96 w-48 ">
-        <Image className="rounded-l-lg object-cover" src={store.storeImg} alt={store.storeName} fill priority />
-      </div>
+    <>
+      {store && (
+        <div className="w-[1020px] mt-8 rounded-lg border flex">
+          <div className="relative w-96 w-48 ">
+            <Image
+              className="rounded-l-lg object-cover"
+              src={store.storeImg}
+              alt={store.storeName}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          </div>
 
-      <div className="px-10 py-5 flex-1">
-        <div className="flex gap-1">
-          {store.tag.map((tag, key) => (
-            <p className="font-extrabold text-sm" key={key}>
-              #{tag}
-            </p>
-          ))}
+          <StoreDetail store={store} />
         </div>
-        <div className="flex justify-between items-center">
-          <h1 className="mt-1 text-primary text-4xl font-black">{store.storeName}</h1>
-          <Follow
-            storeId={store.storeId}
-            isFollow={isFollow}
-            setIsFollow={setIsFollow}
-            followCount={followCount}
-            setFollowCount={setFollowCount}
-          />
-        </div>
-        <p className="mt-2 text-sm">{store.location}</p>
-        <small>{store.locationInfo}</small>
-        <p className="mt-5">{store.description}</p>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

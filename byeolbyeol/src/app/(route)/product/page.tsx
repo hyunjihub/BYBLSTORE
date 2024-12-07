@@ -75,28 +75,28 @@ export default function Product() {
         productQuery = query(
           collection(appFirestore, 'product'),
           orderBy('createdAt', 'desc'),
-          ...(lastVisible ? [startAfter(lastVisible)] : []),
+          startAfter(lastVisible),
           limit(12)
         );
       } else if (filter === 'ascending') {
         productQuery = query(
           collection(appFirestore, 'product'),
           orderBy('salePrice', 'asc'),
-          ...(lastVisible ? [startAfter(lastVisible)] : []),
+          startAfter(lastVisible),
           limit(12)
         );
       } else {
         productQuery = query(
           collection(appFirestore, 'product'),
           orderBy('salePrice', 'desc'),
-          ...(lastVisible ? [startAfter(lastVisible)] : []),
+          startAfter(lastVisible),
           limit(12)
         );
       }
 
       const querySnapshot = await getDocs(productQuery);
       const newProducts = querySnapshot.docs.map((doc) => doc.data() as IProduct);
-      if (newProducts.length < 12 && querySnapshot.empty) {
+      if (newProducts.length < 12 || querySnapshot.empty) {
         setProductEnd(true);
       }
       setProducts((prevProducts) => [...prevProducts, ...newProducts]);

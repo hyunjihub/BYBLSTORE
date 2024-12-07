@@ -81,8 +81,16 @@ export default function CartActions({ cartItems, setCartItems, selectedItems, se
   };
 
   const handleAllOrder = () => {
-    sessionStorage.setItem('orderProducts', JSON.stringify(cartItems));
-    router.push('/order');
+    if (!userId) {
+      router.push('/login');
+      return;
+    }
+    if (cartItems.length > 0) {
+      sessionStorage.setItem('orderProducts', JSON.stringify(cartItems));
+      router.push('/order');
+    } else {
+      alert('주문할 상품이 없습니다.');
+    }
   };
 
   return (
