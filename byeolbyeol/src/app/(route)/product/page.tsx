@@ -129,7 +129,7 @@ export default function Product() {
 
   return (
     <section className="min-h-screen flex justify-center">
-      <article className="max-w-5xl mt-40 mx-auto flex flex-col items-center">
+      <article className="max-w-5xl mt-32 mx-auto flex flex-col items-center">
         <h1 className="font-black text-3xl">PRODUCT</h1>
         <ProductFilter filter={filter} setFilter={setFilter} setProductEnd={setProductEnd} />
         <ul className="mt-3 grid grid-cols-4 gap-5 mb-32">

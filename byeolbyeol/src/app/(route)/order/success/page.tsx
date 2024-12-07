@@ -12,7 +12,7 @@ export default function OrderSuccess() {
   const orderNum = params.get('ordernum');
 
   return (
-    <article className="mt-40 flex flex-col items-center justify-center">
+    <article className="mt-32 flex flex-col items-center justify-center">
       <h1 className="font-black text-3xl">ORDER</h1>
       <Image className="mt-24" src={orderImg} alt="order-success" width={100} height={100} />
       <h2 className="mt-5 text-xl font-bold">

@@ -49,15 +49,14 @@ export default function StoreProduct({ storeId }: { storeId: number }) {
   }, [storeId]);
 
   return (
-    <article className="max-w-5xl mt-24 mb-40 mx-auto flex flex-col items-center">
-      <h2 className="font-black text-3xl">PRODUCT</h2>
+    <>
       {storeProduct && (
-        <ul className="mt-8 grid grid-cols-4 gap-5">
+        <ul className="grid grid-cols-4 gap-5">
           {storeProduct.map((product, key) => (
             <ProductCard wishList={wishProducts} setWishProducts={setWishProducts} product={product} key={key} />
           ))}
         </ul>
       )}
-    </article>
+    </>
   );
 }
