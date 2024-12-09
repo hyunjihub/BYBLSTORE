@@ -118,12 +118,14 @@ export default function Product() {
       { threshold: 1.0 }
     );
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
+    const currentObserverRef = observerRef.current;
+
+    if (currentObserverRef) {
+      observer.observe(currentObserverRef);
     }
 
     return () => {
-      if (observerRef.current) observer.unobserve(observerRef.current);
+      if (currentObserverRef) observer.unobserve(currentObserverRef);
     };
   }, [fetchProducts, loading, productEnd]);
 
