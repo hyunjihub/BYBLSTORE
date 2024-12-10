@@ -5,9 +5,9 @@ import '@/app/globals.css';
 import { OAuthProvider, signInWithCredential } from 'firebase/auth';
 import { appAuth, appFirestore } from '@/firebase/config';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
 
 import axios from 'axios';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useSaveCart from '@/app/hooks/useSaveCart';
 import { useSearchParams } from 'next/navigation';
