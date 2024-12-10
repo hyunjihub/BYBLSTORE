@@ -6,6 +6,7 @@ import { OAuthProvider, signInWithCredential } from 'firebase/auth';
 import { appAuth, appFirestore } from '@/firebase/config';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
+import { Suspense } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -86,4 +87,10 @@ const KakaoRedirectPage = () => {
   return <div></div>;
 };
 
-export default KakaoRedirectPage;
+const PageWithSuspense = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <KakaoRedirectPage />
+  </Suspense>
+);
+
+export default PageWithSuspense;
