@@ -13,7 +13,13 @@ export default function MainProduct({ products }: { products: IProduct[] }) {
         return (
           <Link className="w-[240px]" key={key} title={product.productName} href={`/product/${product.productId}`}>
             <div className="relative w-[240px] h-[150px] border rounded-2xl">
-              <Image className="object-cover rounded-2xl" src={product.productImg[0]} alt={product.productName} fill />
+              <Image
+                className="object-cover rounded-2xl"
+                src={product.productImg[0]}
+                alt={product.productName}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
             </div>
             <p className="mt-3 px-3 font-extrabold text-center text-sm truncate">{product.productName}</p>
             <p className="mt-1 text-center text-xs">{product.salePrice.toLocaleString('ko-kr')}원</p>

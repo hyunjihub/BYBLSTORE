@@ -53,7 +53,7 @@ export default function Product() {
         <h2>
           <strong>{searchWord}</strong>에 대한 검색결과입니다.
         </h2>
-        <ul className="mt-4 grid grid-cols-4 gap-5">
+        <ul className="w-full mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-32">
           {products.map((product, key) => (
             <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
           ))}
