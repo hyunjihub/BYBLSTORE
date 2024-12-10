@@ -48,7 +48,7 @@ export default function WishList() {
   return (
     <article className="flex flex-col items-center justify-center">
       {products.length > 0 ? (
-        <ul className="mt-4 grid grid-cols-4 gap-5">
+        <ul className="w-full mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-32">
           {products.map((product, key) => {
             return (
               <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />

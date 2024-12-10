@@ -32,7 +32,7 @@ export default function MyFollow() {
 
   return (
     <article className="flex flex-col items-center justify-center">
-      <ul className="mt-4 grid grid-cols-2 gap-5">
+      <ul className="w-full mt-3 grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 mb-32">
         {myFollowStore.map((store, key) => {
           return <FollowStore store={store} key={key} />;
         })}
