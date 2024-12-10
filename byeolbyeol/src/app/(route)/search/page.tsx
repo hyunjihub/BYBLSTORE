@@ -2,8 +2,8 @@
 
 import '@/app/globals.css';
 
+import { Suspense, useEffect, useState } from 'react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
 
 import { IProduct } from '@/app/util/types';
 import ProductCard from '@/app/(components)/_product/ProductCard';
@@ -12,12 +12,15 @@ import useFetchWishList from '@/app/hooks/useFetchWishlist';
 import { useSearchParams } from 'next/navigation';
 import useStore from '@/store/useStore';
 
-export default function Product() {
-  const { userId } = useStore();
-  const param = useSearchParams();
-  const searchWord = param.get('word');
+interface ProductListProps {
+  searchWord: string | null;
+  wishProducts: number[];
+  setWishProducts: React.Dispatch<React.SetStateAction<number[]>>; // setWishProducts의 타입
+}
+
+const ProductList = ({ searchWord, wishProducts, setWishProducts }: ProductListProps) => {
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [wishProducts, setWishProducts] = useState<number[]>([]);
+  const { userId } = useStore();
   const wishlistHook = useFetchWishList({ userId: userId as string });
 
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function Product() {
     if (userId) {
       fetchStoreNameAsync();
     }
-  }, [wishlistHook, userId]);
+  }, [wishlistHook, userId, setWishProducts]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -47,17 +50,31 @@ export default function Product() {
   }, [searchWord]);
 
   return (
+    <ul className="w-full mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-32">
+      {products.map((product, key) => (
+        <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
+      ))}
+    </ul>
+  );
+};
+
+export default function Product() {
+  const param = useSearchParams();
+  const searchWord = param.get('word');
+  const [wishProducts, setWishProducts] = useState<number[]>([]);
+
+  return (
     <section className="min-h-screen flex justify-center">
       <article className="max-w-5xl mt-40 mx-auto flex flex-col items-center">
         <h1 className="font-black text-3xl">Search</h1>
         <h2>
           <strong>{searchWord}</strong>에 대한 검색결과입니다.
         </h2>
-        <ul className="w-full mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-32">
-          {products.map((product, key) => (
-            <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
-          ))}
-        </ul>
+
+        {/* Suspense 컴포넌트로 감싸기 */}
+        <Suspense fallback={<div>Loading products...</div>}>
+          <ProductList searchWord={searchWord} wishProducts={wishProducts} setWishProducts={setWishProducts} />
+        </Suspense>
       </article>
     </section>
   );
