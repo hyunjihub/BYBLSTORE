@@ -15,7 +15,7 @@ import useStore from '@/store/useStore';
 interface ProductListProps {
   searchWord: string | null;
   wishProducts: number[];
-  setWishProducts: React.Dispatch<React.SetStateAction<number[]>>; // setWishProducts의 타입
+  setWishProducts: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const ProductList = ({ searchWord, wishProducts, setWishProducts }: ProductListProps) => {
@@ -60,8 +60,12 @@ const ProductList = ({ searchWord, wishProducts, setWishProducts }: ProductListP
 
 export default function Product() {
   const param = useSearchParams();
-  const searchWord = param.get('word');
+  const [searchWord, setSearchWord] = useState<string | null>(null);
   const [wishProducts, setWishProducts] = useState<number[]>([]);
+
+  useEffect(() => {
+    setSearchWord(param.get('word'));
+  }, [param]);
 
   return (
     <section className="min-h-screen flex justify-center">
@@ -71,10 +75,13 @@ export default function Product() {
           <strong>{searchWord}</strong>에 대한 검색결과입니다.
         </h2>
 
-        {/* Suspense 컴포넌트로 감싸기 */}
-        <Suspense fallback={<div>Loading products...</div>}>
-          <ProductList searchWord={searchWord} wishProducts={wishProducts} setWishProducts={setWishProducts} />
-        </Suspense>
+        {searchWord ? (
+          <Suspense fallback={<div>Loading products...</div>}>
+            <ProductList searchWord={searchWord} wishProducts={wishProducts} setWishProducts={setWishProducts} />
+          </Suspense>
+        ) : (
+          <div>검색어를 입력해주세요.</div>
+        )}
       </article>
     </section>
   );
