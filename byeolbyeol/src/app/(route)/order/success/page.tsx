@@ -4,10 +4,11 @@ import '@/app/globals.css';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import orderImg from '/public/images/order.png';
 import { useSearchParams } from 'next/navigation';
 
-export default function OrderSuccess() {
+const OrderSuccess = () => {
   const params = useSearchParams();
   const orderNum = params.get('ordernum');
 
@@ -34,4 +35,12 @@ export default function OrderSuccess() {
       </div>
     </article>
   );
-}
+};
+
+const OrderSuccessPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <OrderSuccess />
+  </Suspense>
+);
+
+export default OrderSuccessPage;
