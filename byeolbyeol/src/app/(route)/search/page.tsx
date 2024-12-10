@@ -12,15 +12,12 @@ import useFetchWishList from '@/app/hooks/useFetchWishlist';
 import { useSearchParams } from 'next/navigation';
 import useStore from '@/store/useStore';
 
-interface ProductListProps {
-  searchWord: string | null;
-  wishProducts: number[];
-  setWishProducts: React.Dispatch<React.SetStateAction<number[]>>;
-}
-
-const ProductList = ({ searchWord, wishProducts, setWishProducts }: ProductListProps) => {
-  const [products, setProducts] = useState<IProduct[]>([]);
+const Product = () => {
   const { userId } = useStore();
+  const param = useSearchParams();
+  const searchWord = param.get('word');
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [wishProducts, setWishProducts] = useState<number[]>([]);
   const wishlistHook = useFetchWishList({ userId: userId as string });
 
   useEffect(() => {
@@ -32,7 +29,7 @@ const ProductList = ({ searchWord, wishProducts, setWishProducts }: ProductListP
     if (userId) {
       fetchStoreNameAsync();
     }
-  }, [wishlistHook, userId, setWishProducts]);
+  }, [wishlistHook, userId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -50,39 +47,26 @@ const ProductList = ({ searchWord, wishProducts, setWishProducts }: ProductListP
   }, [searchWord]);
 
   return (
-    <ul className="w-full mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-32">
-      {products.map((product, key) => (
-        <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
-      ))}
-    </ul>
-  );
-};
-
-export default function Product() {
-  const param = useSearchParams();
-  const [searchWord, setSearchWord] = useState<string | null>(null);
-  const [wishProducts, setWishProducts] = useState<number[]>([]);
-
-  useEffect(() => {
-    setSearchWord(param.get('word'));
-  }, [param]);
-
-  return (
     <section className="min-h-screen flex justify-center">
       <article className="max-w-5xl mt-40 mx-auto flex flex-col items-center">
         <h1 className="font-black text-3xl">Search</h1>
         <h2>
           <strong>{searchWord}</strong>에 대한 검색결과입니다.
         </h2>
-
-        {searchWord ? (
-          <Suspense fallback={<div>Loading products...</div>}>
-            <ProductList searchWord={searchWord} wishProducts={wishProducts} setWishProducts={setWishProducts} />
-          </Suspense>
-        ) : (
-          <div>검색어를 입력해주세요.</div>
-        )}
+        <ul className="w-full mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-32">
+          {products.map((product, key) => (
+            <ProductCard product={product} wishList={wishProducts} setWishProducts={setWishProducts} key={key} />
+          ))}
+        </ul>
       </article>
     </section>
   );
-}
+};
+
+const OrderSuccessPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Product />
+  </Suspense>
+);
+
+export default OrderSuccessPage;
