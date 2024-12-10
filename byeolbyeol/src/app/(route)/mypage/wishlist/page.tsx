@@ -17,22 +17,23 @@ export default function WishList() {
   const { userId } = useStore();
   const [wishProducts, setWishProducts] = useState<number[]>([]);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const wishlistHook = useFetchWishList({ userId: userId as string });
 
   useEffect(() => {
-    const fetchStoreNameAsync = async () => {
-      const wishlistHook = await useFetchWishList({ userId: userId as string });
-      setWishProducts(wishlistHook);
+    const fetchWishProductsAsync = async () => {
+      const wish = await wishlistHook;
+      setWishProducts(wish);
     };
 
     if (userId) {
-      fetchStoreNameAsync();
+      fetchWishProductsAsync();
     }
-  }, [userId]);
+  }, [wishlistHook, userId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        let productQuery = query(collection(appFirestore, 'product'), where('productId', 'in', wishProducts));
+        const productQuery = query(collection(appFirestore, 'product'), where('productId', 'in', wishProducts));
         const querySnapshot = await getDocs(productQuery);
         const products = querySnapshot.docs.map((doc) => doc.data() as IProduct);
         setProducts(products);
