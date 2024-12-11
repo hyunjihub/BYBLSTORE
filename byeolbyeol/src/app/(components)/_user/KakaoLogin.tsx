@@ -9,7 +9,7 @@ export default function KakaoLogin() {
   const handleKakaoLogin = () => {
     const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${
       process.env.NEXT_PUBLIC_KAKAO_REST_API
-    }&redirect_uri=${'http://localhost:3000/oauth/kakao'}&response_type=code&scope=account_email,openid,profile_nickname`;
+    }&redirect_uri=${'https://byblstore.vercel.app/oauth/kakao'}&response_type=code&scope=account_email,openid,profile_nickname`;
     window.location.href = kakaoAuthUrl;
   };
 
