@@ -23,7 +23,10 @@ export default function StoreCarousel() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const storeQuery = query(collection(appFirestore, 'store'), where('storeId', 'in', [1, 2, 3, 4, 5, 6, 7, 8]));
+        const randomArr = Array.from({ length: 8 }, (_, index) => index + 1)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 8);
+        const storeQuery = query(collection(appFirestore, 'store'), where('storeId', 'in', randomArr));
         const querySnapshot = await getDocs(storeQuery);
         const store = querySnapshot.docs.map((doc) => doc.data() as IStore);
         setStores(store);
