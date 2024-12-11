@@ -50,7 +50,7 @@ export default function Header() {
 
   return (
     <header className="flex items-center justify-between px-5 lg:px-20 border-b border-black relative" ref={headerRef}>
-      <ul className="hidden lg:flex gap-8 text-sm font-extrabold">
+      <ul className="min-w-60 hidden lg:flex gap-8 text-sm font-extrabold">
         <li>
           <Link href={'/store'}>STORE</Link>
         </li>
