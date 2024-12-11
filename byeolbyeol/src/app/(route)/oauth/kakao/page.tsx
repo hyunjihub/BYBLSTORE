@@ -29,7 +29,7 @@ const KakaoRedirectPage = () => {
           grant_type: 'authorization_code',
           client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API,
           client_secret: process.env.NEXT_PUBLIC_KAKAO_CLIENT_SECRET,
-          redirect_uri: 'http://localhost:3000/oauth/kakao',
+          redirect_uri: 'https://byblstore.vercel.app/oauth/kakao',
           code: code,
         },
         headers: {
