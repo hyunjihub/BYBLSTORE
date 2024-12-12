@@ -18,11 +18,18 @@ https://byblstore.vercel.app/
 
 ## 주요 기능
 ###### 이메일 및 카카오 소셜 로그인
-###### 스토어 목록 및 스토어 정보
-###### 판매 상품 목록 및 상품 정보
-###### 위시리스트 추가
-###### 장바구니 기능
-###### 상품 주문
-###### 주문 내역 반환
-###### 스토어 팔로우
+![-Clipchamp55-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/21f6391f-385a-48bc-bd63-fb5ed9f10eab)
+###### 스토어 목록 및 판매 상품 목록
+![-Clipchamp56-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/08f259bd-9603-41aa-af0d-1231cd777ac7)
+###### 스토어 정보 및 팔로우
+![-Clipchamp68-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/bbbc2bd3-29b1-4ecb-aeb6-386d1cfb8909)
+###### 상품 정보 및 옵션 선택
+![-Clipchamp64-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/3dbac55a-8c0b-45a5-b92c-8317f9a99cd6)
+###### 위시리스트
+![-Clipchamp65-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/ac708f47-a78b-4b5d-8fa9-0f7c7aca41a4)
+###### 장바구니
+![-Clipchamp59-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e3c6e5cd-0b9a-4c78-b197-8183f258f857)
+###### 상품 주문 및 주문 내역
+![-Clipchamp67-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/f25c74ba-cd46-4f9c-a658-7a0b09a9b69f)
 ###### 상품 검색 및 자동완성
+![-Clipchamp62-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/2cad40f4-e287-4dd6-9e23-06960c3232aa)
