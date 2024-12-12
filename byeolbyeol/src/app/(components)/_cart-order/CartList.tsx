@@ -61,10 +61,6 @@ export default function CartList() {
     }
   };
 
-  useEffect(() => {
-    console.log(selectedItems);
-  }, [selectedItems]);
-
   return (
     <article className="w-[1020px] mt-6 flex flex-col items-center justify-center">
       <table className="min-w-full bg-gray-100">

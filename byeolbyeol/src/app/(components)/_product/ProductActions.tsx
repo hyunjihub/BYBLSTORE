@@ -5,6 +5,7 @@ import '@/app/globals.css';
 import { ICart, ISelectedOption } from '@/app/util/types';
 
 import addCart from '@/app/util/addCart';
+import { useRouter } from 'next/navigation';
 import useStore from '@/store/useStore';
 
 export default function ProductActions({
@@ -19,6 +20,7 @@ export default function ProductActions({
   selectedOptions: ISelectedOption[];
 }) {
   const { userId } = useStore();
+  const router = useRouter();
 
   const handleAddToCart = async () => {
     if (selectedOptions.length < 1) {
@@ -40,6 +42,29 @@ export default function ProductActions({
     alert('장바구니에 추가되었습니다.');
   };
 
+  const handleSelectedOrder = () => {
+    if (!userId) {
+      router.push('/login');
+      return;
+    }
+
+    const selectedItems = [];
+    for (const option of selectedOptions) {
+      const productToCart = {
+        productId: productId,
+        option: option.option,
+        quantity: option.quantity,
+        storeName: storeName,
+        salePrice: salePrice,
+      } as ICart;
+
+      selectedItems.push(productToCart);
+    }
+
+    sessionStorage.setItem('orderProducts', JSON.stringify(selectedItems));
+    router.push('/order');
+  };
+
   return (
     <div className="w-full flex justify-between">
       <button
@@ -48,7 +73,9 @@ export default function ProductActions({
       >
         장바구니
       </button>
-      <button className="w-9/12 py-3 bg-primary rounded text-white font-extrabold">구매하기</button>
+      <button className="w-9/12 py-3 bg-primary rounded text-white font-extrabold" onClick={handleSelectedOrder}>
+        구매하기
+      </button>
     </div>
   );
 }
